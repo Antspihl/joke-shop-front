@@ -3,14 +3,12 @@
     <v-toolbar-title>
       <v-row>
         <v-img
-          class="mr-3"
-          max-width="120"
-          :aspect-ratio="1.5"
+          class="v_image"
           src='/Asendus_logo.png'
         ></v-img>
         <ul>
           <template v-for="page in pages">
-            <v-btn class="mt-5" color="white" variant="text">
+            <v-btn class="v_link">
               <router-link class="text-white text-decoration-none" :to=page.path v-slot="{href, route, navigate}">
                 {{ page.name }}
               </router-link>
@@ -21,7 +19,7 @@
     </v-toolbar-title>
 
     <v-card
-      class="mr-4 my-10"
+      class="user_card"
       v-if="userIsLoggedIn"
     >
       <v-card-subtitle>
@@ -35,7 +33,7 @@
 
     <v-btn
       v-else
-      class="px-5"
+      class="login"
       @Click="login"
     >Logi sisse
     </v-btn>
@@ -60,3 +58,29 @@ const login = () => {
   userIsLoggedIn.value = true;
 }
 </script>
+
+<!--Create CSS classes for all components-->
+<style scoped>
+  .v_image {
+    max-width: 120px;
+    aspect-ratio: 1.5;
+    margin-right: 12px;
+  }
+
+  .v_link {
+    margin-top: 20px;
+    color: white;
+    text-decoration: none;
+  }
+
+  .user_card {
+    margin-right: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .login {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+</style>
