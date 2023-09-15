@@ -29,7 +29,7 @@
         </v-btn>
       </v-card-subtitle>
     </v-card>
-    <v-btn v-if="userIsLoggedIn" @Click="logout" >Logi välja</v-btn>
+    <v-btn v-if="userIsLoggedIn" @Click="logout">Logi välja</v-btn>
 
     <v-btn
       v-else
@@ -61,26 +61,26 @@ const login = () => {
 
 <!--Create CSS classes for all components-->
 <style scoped>
-  .v_image {
-    max-width: 120px;
-    aspect-ratio: 1.5;
-    margin-right: 12px;
-  }
+.v_image {
+  max-width: 120px;
+  aspect-ratio: 1.5;
+  margin-right: 12px;
+}
 
-  .v_link {
-    margin-top: 20px;
-    color: white;
-    text-decoration: none;
-  }
+.v_link {
+  margin-top: 20px;
+  color: white;
+  text-decoration: none;
+}
 
-  .user_card {
-    margin-right: 20px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
+.user_card {
+  margin-right: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
-  .login {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+.login {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>
