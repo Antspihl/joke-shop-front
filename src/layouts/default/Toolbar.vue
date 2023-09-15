@@ -11,7 +11,7 @@
         <ul>
           <template v-for="page in pages">
             <v-btn class="mt-5" color="white" variant="text">
-              <router-link class="text-white text-decoration-none" to={{page.path}} v-slot="{href, route, navigate}">
+              <router-link class="text-white text-decoration-none" :to=page.path v-slot="{href, route, navigate}">
                 {{ page.name }}
               </router-link>
             </v-btn>
