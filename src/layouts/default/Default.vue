@@ -2,12 +2,12 @@
   <v-app>
     <tool-bar />
     <default-view />
-    <footer />
+    <footer-base />
   </v-app>
 </template>
 
 <script lang="ts" setup>
   import ToolBar from './Toolbar.vue'
   import DefaultView from './View.vue'
-  import Footer from './Footer.vue'
+  import FooterBase from './Footer.vue'
 </script>
