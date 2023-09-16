@@ -18,8 +18,19 @@
       </v-row>
     </v-toolbar-title>
 
+    <v-switch
+      class="theme_switch"
+      v-model="isOppen"
+      @click="toggleTheme"
+    >
+      <template v-slot:prepend>
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </template>
+    </v-switch>
+
     <v-card
       class="user_card"
+      color="secondary"
       v-if="userIsLoggedIn"
     >
       <v-card-subtitle>
@@ -42,6 +53,10 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
+import {useTheme} from "vuetify";
+
+const isOppen = ref(false);
+const theme = useTheme()
 
 const userIsLoggedIn = ref(false);
 const username = ref("Ilmar");
@@ -49,13 +64,24 @@ const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/"},
   {name: "Saak", path: "/"},
-  {name: "Meist", path: "/"}]);
+  {name: "Meist", path: "/"}
+]);
 
 const logout = () => {
   userIsLoggedIn.value = false;
 }
 const login = () => {
   userIsLoggedIn.value = true;
+}
+
+const toggleTheme = () => {
+  if (isOppen.value) {
+    theme.global.name.value = 'barbie'
+    isOppen.value = false
+  } else {
+    theme.global.name.value = 'oppenheimer'
+    isOppen.value = true
+  }
 }
 </script>
 
@@ -76,6 +102,13 @@ const login = () => {
   margin-right: 20px;
   margin-top: 40px;
   margin-bottom: 40px;
+}
+
+.theme_switch {
+  max-width: 80px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-right: 10px;
 }
 
 .login {
