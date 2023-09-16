@@ -59,7 +59,6 @@ const login = () => {
 }
 </script>
 
-<!--Create CSS classes for all components-->
 <style scoped>
 .v_image {
   max-width: 120px;
