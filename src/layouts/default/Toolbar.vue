@@ -18,8 +18,19 @@
       </v-row>
     </v-toolbar-title>
 
+    <v-switch
+      class="theme_switch"
+      v-model="isOppen"
+      @click="toggleTheme"
+    >
+      <template v-slot:prepend>
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </template>
+    </v-switch>
+
     <v-card
       class="user_card"
+      color="secondary"
       v-if="userIsLoggedIn"
     >
       <v-card-subtitle>
@@ -29,7 +40,7 @@
         </v-btn>
       </v-card-subtitle>
     </v-card>
-    <v-btn v-if="userIsLoggedIn" @Click="logout" >Logi välja</v-btn>
+    <v-btn v-if="userIsLoggedIn" @Click="logout">Logi välja</v-btn>
 
     <v-btn
       v-else
@@ -42,6 +53,10 @@
 
 <script lang="ts" setup>
 import {ref} from "vue";
+import {useTheme} from "vuetify";
+
+const isOppen = ref(false);
+const theme = useTheme()
 
 const userIsLoggedIn = ref(false);
 const username = ref("Ilmar");
@@ -49,7 +64,8 @@ const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/"},
   {name: "Saak", path: "/"},
-  {name: "Meist", path: "/"}]);
+  {name: "Meist", path: "/"}
+]);
 
 const logout = () => {
   userIsLoggedIn.value = false;
@@ -57,30 +73,46 @@ const logout = () => {
 const login = () => {
   userIsLoggedIn.value = true;
 }
+
+const toggleTheme = () => {
+  if (isOppen.value) {
+    theme.global.name.value = 'barbie'
+    isOppen.value = false
+  } else {
+    theme.global.name.value = 'oppenheimer'
+    isOppen.value = true
+  }
+}
 </script>
 
-<!--Create CSS classes for all components-->
 <style scoped>
-  .v_image {
-    max-width: 120px;
-    aspect-ratio: 1.5;
-    margin-right: 12px;
-  }
+.v_image {
+  max-width: 120px;
+  aspect-ratio: 1.5;
+  margin-right: 12px;
+}
 
-  .v_link {
-    margin-top: 20px;
-    color: white;
-    text-decoration: none;
-  }
+.v_link {
+  margin-top: 20px;
+  color: white;
+  text-decoration: none;
+}
 
-  .user_card {
-    margin-right: 20px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
+.user_card {
+  margin-right: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
 
-  .login {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+.theme_switch {
+  max-width: 80px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+
+.login {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>
