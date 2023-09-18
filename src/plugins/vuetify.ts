@@ -22,7 +22,7 @@ export default createVuetify({
           secondary: '#F78CC5',
           accent: '#C4277B',
           background: '#F7D4E7',
-          text: '#040103',
+          text: '#ffffff',
         },
       },
       oppenheimer: {
