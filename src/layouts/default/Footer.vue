@@ -7,15 +7,6 @@
           src='/Asendus_logo.png'
         />
       </v-col>
-      <v-col md="4" cols="12" class="text-center">
-        <template v-for="footerLink in footerLinks">
-          <router-link :to="footerLink.url" v-slot="{href, route, navigate}">
-            <v-btn :href="href" @click="navigate" color="white" variant="text" rounded
-            >{{ footerLink.name }}
-            </v-btn>
-          </router-link>
-        </template>
-      </v-col>
 
       <v-col md="4" cols="12" class="text-center">
         <v-row>
@@ -38,15 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-interface FooterLink {
-  name: string,
-  url: string
-}
 
-const footerLinks: FooterLink[] = [
-  {name: "Privaatsuspoliitika", url: "/"},
-  {name: "Kasutajatingimused", url: "/"},
-]
 </script>
 
 <style scoped>
@@ -60,6 +43,7 @@ const footerLinks: FooterLink[] = [
   padding-right: 4px;
   padding-bottom: 4px;
 }
+
 .v_middle_row {
   padding-top: 0;
   padding-bottom: 4px;

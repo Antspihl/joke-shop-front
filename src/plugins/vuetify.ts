@@ -9,7 +9,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
 // Composables
-import {createVuetify} from 'vuetify'
+import { createVuetify } from 'vuetify'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -22,7 +22,7 @@ export default createVuetify({
           secondary: '#F78CC5',
           accent: '#C4277B',
           background: '#F7D4E7',
-          text: '#B42885',
+          text: '#ffffff',
         },
       },
       oppenheimer: {
