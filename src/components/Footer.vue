@@ -1,5 +1,5 @@
 <template>
-  <v-footer app absolute color="primary lighten-1">
+  <v-footer color="primary lighten-1">
     <v-row align="center" class="mb-0">
       <v-col md="4" cols="12">
         <v-img

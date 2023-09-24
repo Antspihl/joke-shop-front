@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-  import ToolBar from './Toolbar.vue'
+  import ToolBar from '../../components/Toolbar.vue'
   import DefaultView from './View.vue'
-  import BaseFooter from './Footer.vue'
+  import BaseFooter from '../../components/Footer.vue'
 </script>

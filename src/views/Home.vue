@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import FrontPage from '@/components/Front_page.vue'
+import FrontPage from '@/pages/FrontPage.vue'
 </script>
