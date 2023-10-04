@@ -21,17 +21,16 @@ const getJokes = async() => {
   } catch (error) {
     console.error(error);
 }
-
-onMounted(async () => {
-  console.log("Mounted")
-  await getJokes();
-});
 }
+onMounted(() => {
+  console.log("Mounted")
+  getJokes();
+});
 </script>
 
 <template>
-  <h3>{{jokes}}</h3>
   <v-container>
+    <h1 class="h1">Müügil olevad naljad</h1>
     <v-row>
       <v-col
         v-for="joke in jokes.values()"
@@ -40,25 +39,19 @@ onMounted(async () => {
         sm="6"
         md="4"
       >
-        <v-card>
-          <v-card-title>
+        <v-card color="secondary">
+          <v-card-title class="card_title">
             {{ joke.setup }}
           </v-card-title>
-          <v-card-text>
-            {{ joke.punchline }}
-          </v-card-text>
+          <v-card-subtitle class="card_subtitle">
+            Hind: {{ joke.price }}€
+          </v-card-subtitle>
           <v-card-actions>
             <v-btn
               color="primary"
-              text
+              class="v_btn"
             >
-              Buy
-            </v-btn>
-            <v-btn
-              color="primary"
-              text
-            >
-              {{ joke.price }}€
+              Osta
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -68,5 +61,24 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.h1 {
+  padding-bottom: 1rem;
+}
 
+.card_title {
+  color: white;
+  padding-top: 15px;
+  padding-left: 22px;
+}
+
+.card_subtitle {
+  padding-left: 22px;
+  padding-bottom: 5px;
+  color: white;
+}
+.v_btn {
+  margin-left: 4px;
+  margin-bottom: 5px;
+  color: white;
+}
 </style>

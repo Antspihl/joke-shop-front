@@ -12,7 +12,7 @@
       <template v-for="joke in jokes">
         <v-card class="v_card" color="secondary" variant="elevated">
           <v-row>
-            <v-card-title class="card-title">
+            <v-card-title class="card_title">
               {{ joke.setup }}
             </v-card-title>
           </v-row>
@@ -85,7 +85,7 @@ const jokes = ref([
   text-decoration: underline;
   text-align: left;
 }
-.card-title {
+.card_title {
   color: white;
   padding-top: 15px;
   padding-left: 22px;
