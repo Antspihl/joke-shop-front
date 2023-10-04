@@ -20,7 +20,7 @@
 
     <v-switch
       class="theme_switch"
-      v-model="isOppen"
+      v-model="isntOppen"
       @click="toggleTheme"
     >
       <template v-slot:prepend>
@@ -55,14 +55,14 @@
 import {ref} from "vue";
 import {useTheme} from "vuetify";
 
-const isOppen = ref(false);
+const isntOppen = ref(false);
 const theme = useTheme()
 
 const userIsLoggedIn = ref(false);
 const username = ref("Ilmar");
 const pages = ref([
   {name: "Avaleht", path: "/"},
-  {name: "Galerii", path: "/"},
+  {name: "Galerii", path: "/jokes"},
   {name: "Saak", path: "/"},
   {name: "Meist", path: "/"}
 ]);
@@ -75,12 +75,12 @@ const login = () => {
 }
 
 const toggleTheme = () => {
-  if (isOppen.value) {
-    theme.global.name.value = 'barbie'
-    isOppen.value = false
-  } else {
+  if (isntOppen.value) {
     theme.global.name.value = 'oppenheimer'
-    isOppen.value = true
+    isntOppen.value = false
+  } else {
+    theme.global.name.value = 'barbie'
+    isntOppen.value = true
   }
 }
 </script>
