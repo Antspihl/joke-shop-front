@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="primary lighten-1">
+  <v-footer color="primary lighten-1" class="v_footer">
     <v-row align="center" class="mb-0">
       <v-col md="4" cols="12">
         <v-img
@@ -33,6 +33,9 @@
 </script>
 
 <style scoped>
+.v_footer {
+  max-height: 8rem;
+}
 .v_image {
   max-width: 120px;
   aspect-ratio: 1.5;
