@@ -12,39 +12,69 @@
       <v-btn :disabled="loading" type="submit" class="btn-primary">Lisa</v-btn>
     </form>
   </v-container>
+  <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout" close-on-content-click>
+    {{ snackbar.message }}
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
 
 import { ref } from "vue";
 import Form from "vform";
+import axios from "axios";
+
+const backendUrl = "http://localhost:8080/api/jokes/add"
 
 const formFields = {
-  header: "Pealkiri",
   setup: "Setup",
   punchline: "Punchline",
+  price: "Hind",
   isOriginal: "Kas nali on originaal?",
 }
 
 const formData = ref(new Form({
-  header: "",
   setup: "",
   punchline: "",
+  price: "",
   isOriginal: false,
 }))
+
+const snackbar = ref({
+  show: false,
+  message: "",
+  color: "success",
+  timeout: 3000,
+})
 
 const loading = ref(false)
 
 const handleSubmit = async () => {
   loading.value = true
   console.log(formData.value)
-
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  loading.value = false
-  formData.value.clear()
-  formData.value.reset()
+  try {
+    await axios.post(backendUrl, formData.value.data(), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    showSnackbar("Joke added successfully", "#FFFCF5");
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    showSnackbar("Error adding joke", "#D7D3AE");
+  } finally {
+    loading.value = false
+    formData.value.clear()
+    formData.value.reset()
+  }
+};const showSnackbar = (message: string, color: string) => {
+  snackbar.value = {
+    show: true,
+    message,
+    color,
+    timeout: 8000,
+  };
 };
+
 </script>
 
 <style scoped>

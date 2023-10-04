@@ -2,6 +2,7 @@
   <v-app>
     <Tool-bar />
     <default-view />
+<!--    <joke-submission-form />-->
     <Base-footer />
   </v-app>
 </template>
