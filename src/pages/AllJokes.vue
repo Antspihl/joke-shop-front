@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, Ref, ref} from "vue";
 import axios from "axios";
 
-const jokes_url = "http://localhost:8080/api/jokes/all";
-const jokes = ref<Joke[]>([]);
+const jokes_url: string = "http://localhost:8080/api/jokes/all";
+const jokes: Ref<Joke[]> = ref<Joke[]>([]);
 
 interface Joke {
   id: number;
@@ -13,15 +13,16 @@ interface Joke {
   timesBought: number;
 }
 
-const getJokes = async() => {
+const getJokes = async () => {
   try {
     console.log("Getting jokes")
     const response = await axios.get(jokes_url);
     jokes.value = response.data;
   } catch (error) {
     console.error(error);
+  }
 }
-}
+
 onMounted(() => {
   console.log("Mounted")
   getJokes();
@@ -76,6 +77,7 @@ onMounted(() => {
   padding-bottom: 5px;
   color: white;
 }
+
 .v_btn {
   margin-left: 4px;
   margin-bottom: 5px;
