@@ -117,6 +117,7 @@ onMounted(() => {
 <style scoped>
 .h1 {
   padding-bottom: 1rem;
+  color: white;
 }
 
 .card_title {
