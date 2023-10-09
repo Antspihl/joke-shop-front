@@ -2,7 +2,8 @@
 import {onMounted, Ref, ref} from "vue";
 import axios from "axios";
 
-const jokes_url: string = "http://localhost:8080/api/jokes/all";
+const jokes_url: string = "http://localhost:8080/api/jokes/setups";
+const buy_url: string = "http://localhost:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
 
 interface Joke {
@@ -15,7 +16,7 @@ interface Joke {
   showPunchline?: boolean;
 }
 
-const currentJoke = ref<Joke>({
+const currentDialogJoke = ref<Joke>({
   id: 0,
   setup: "",
   punchline: "",
@@ -27,19 +28,27 @@ const currentJoke = ref<Joke>({
 
 const openDialog = (id: number) => {
   setCurrentJokeById(id);
-  currentJoke.value.showDialog = true;
+  currentDialogJoke.value.showDialog = true;
 }
 
 const closeDialog = () => {
-  currentJoke.value.showDialog = false;
+  currentDialogJoke.value.showDialog = false;
 }
 
 const setCurrentJokeById = (id: number) => {
-  currentJoke.value = jokes.value.find(joke => joke.id === id)!;
+  currentDialogJoke.value = jokes.value.find(joke => joke.id === id)!;
 }
 
 const buyJoke = async (id: number) => {
-  currentJoke.value.showPunchline = true
+  try {
+    console.log("Buying joke")
+    const response = await axios.get(buy_url + id);
+    console.log(response.data)
+    currentDialogJoke.value.punchline = response.data.punchline;
+    currentDialogJoke.value.showPunchline = true
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 const getJokes = async () => {
@@ -47,6 +56,7 @@ const getJokes = async () => {
     console.log("Getting jokes")
     const response = await axios.get(jokes_url);
     jokes.value = response.data;
+    jokes.value.sort((a: Joke, b: Joke) => a.id - b.id);
   } catch (error) {
     console.error(error);
   }
@@ -92,14 +102,14 @@ onMounted(() => {
                   color="accent"
                   class="joke_card"
                 >
-                  <v-card-text>{{ currentJoke.setup }}</v-card-text>
-                  <v-card-text v-if="currentJoke.showPunchline">{{ joke.punchline }}</v-card-text>
+                  <v-card-text>{{ currentDialogJoke.setup }}</v-card-text>
+                  <v-card-text v-if="currentDialogJoke.showPunchline">{{ joke.punchline }}</v-card-text>
                   <v-card-text v-else>Soovid osta selle nalja lööklauset? Hind: {{ joke.price }}€</v-card-text>
                   <v-card-actions>
                     <v-btn color="primary"
                            class="v_btn"
                            @click="buyJoke(joke.id)"
-                           v-if="!currentJoke.showPunchline">
+                           v-if="!currentDialogJoke.showPunchline">
                       Osta
                     </v-btn>
                     <v-btn color="error" @click="closeDialog">Välju</v-btn>
