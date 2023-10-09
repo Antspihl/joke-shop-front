@@ -57,6 +57,7 @@ const jokes = ref([
   font-size: 2em;
   text-align: center;
   margin-top: 75px;
+  color: white;
 }
 
 .shop_btn {
