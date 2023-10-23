@@ -25,7 +25,7 @@ interface Joke {
   punchline: string;
   price: number;
   timesBought: number;
-  showDialog: Boolean;
+  showDialog: boolean;
   showPunchline?: boolean;
 }
 
