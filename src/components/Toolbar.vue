@@ -64,7 +64,7 @@ const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
   {name: "Saak", path: "/"},
-  {name: "Meist", path: "/"}
+  {name: "Kasutajad", path: "/users"}
 ]);
 
 const logout = () => {
