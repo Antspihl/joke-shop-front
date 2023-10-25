@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import Allusers from "@/pages/AllUsers.vue";
+import AllUsers from "@/pages/AllUsers.vue";
 </script>

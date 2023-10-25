@@ -1,40 +1,46 @@
+<!--<script>-->
+<!--export default {-->
+<!--  data: () => ({-->
+<!--    headers: [-->
+<!--      [-->
+<!--        {-->
+<!--          title: 'Kasutajad',-->
+<!--          align: 'start',-->
+<!--          sortable: false,-->
+<!--          key: 'name',-->
+<!--          rowspan: 2,-->
+<!--        }-->
+<!--      ],-->
+<!--      [-->
+<!--        {title: 'ID', align: 'end', key: 'userId'},-->
+<!--        {title: 'Username', align: 'end', key: 'username'},-->
+<!--        {title: 'Full name', align: 'end', key: 'fullName'},-->
+<!--        {title: 'Email', align: 'end', key: 'email'},-->
+<!--        {title: 'Admin', align: 'end', key: 'isAdmin'},-->
+<!--      ]-->
+<!--    ]-->
+<!--  })-->
+<!--};-->
+<!--</script>-->
+
 <template>
-  <v-container class="all-jokes">
-    <div class="header-title">
-      <h1>Kasutajad</h1>
-    </div>
-    <v-row>
-      <v-table>
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Kasutajanimi</th>
-          <th>Täisnimi</th>
-          <th>Email</th>
-          <th>Admin</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="user in users" :key="user.userId">
-          <td>{{ user.userId }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.fullName }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.isAdmin }}</td>
-          <td>{{ // user.isAdmin ? 'Jah' : 'Ei' }}</td>
-        </tr>
-        </tbody>
-      </v-table>
-    </v-row>
-  </v-container>
+  <v-data-table
+    :headers="headers"
+    :items="users"
+    item-value="name"
+    class="elevation-1"
+  >
+    <template v-slot:column.name="{ column }">
+      {{ column.title.toUpperCase() }}
+    </template>
+  </v-data-table>
 </template>
 <script setup lang="ts">
 import {computed, onMounted, Ref, ref} from "vue";
 import axios from "axios";
-import JokeCard from "@/molecules/JokeCard.vue";
-import JokeDialog from "@/molecules/JokeDialog.vue";
 
-const users_url: string = "http://localhost:8080/api/users/getAll";
+const users_url: string = "http://localhost:8080/api/users/all";
+// const users_url: string = "http://193.40.156.35:8080/api/users/all"; seda saab hetkel kasutada, ei pea backi toole paneme enda masinas
 const users: Ref<User[]> = ref<User[]>([]);
 
 interface User {
