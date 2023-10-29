@@ -4,10 +4,15 @@
       <v-card-title class="card-title">{{ joke.setup }}</v-card-title>
       <v-card-subtitle class="card-subtitle">Hind: {{ joke.price }}€</v-card-subtitle>
       <v-card-actions>
-        <v-btn color="primary" class="action-btn" @click="$emit('openDialog', joke.id)">
+        <v-btn class="buy-button" color="primary" @click="$emit('openDialog', joke.id)">
           <span v-if="joke.showPunchline">Vaata</span>
           <span v-else>Osta</span>
         </v-btn>
+        <v-rating
+          v-model="joke.rating"
+          color="primary"
+          density="compact"
+          :readonly="!joke.showPunchline"/>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -20,6 +25,7 @@ interface Joke {
   setup: string;
   punchline: string;
   price: number;
+  rating: number;
   timesBought: number;
   showPunchline?: boolean;
 }
@@ -31,7 +37,10 @@ const props = defineProps<{
 const { joke } = toRefs(props);
 </script>
 <style scoped>
-
+.buy-button {
+  background-color: #D7D3Ae;
+  margin-right: 55px;
+}
 .card_title {
   color: white;
   padding-top: 15px;
@@ -41,12 +50,6 @@ const { joke } = toRefs(props);
 .card_subtitle {
   padding-left: 22px;
   padding-bottom: 5px;
-  color: white;
-}
-
-.v_btn {
-  margin-left: 4px;
-  margin-bottom: 5px;
   color: white;
 }
 
