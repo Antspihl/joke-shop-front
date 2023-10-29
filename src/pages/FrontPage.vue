@@ -1,14 +1,17 @@
 <template>
   <v-container>
+    <div class="welcoming-container">
     <v-row>
       <v-col cols="12" class="welcoming_text">
         <span>Midagi naljadest siia. Võiks RNG sõnum olla</span>
       </v-col>
     </v-row>
-    <v-btn class="shop_btn" color="primary" to="/">Avasta nalju</v-btn>
+    <v-btn class="shop_btn" color="accent" to="/jokes">Avasta nalju</v-btn>
+    </div>
   </v-container>
     <v-container class="bottom_div">
     <span class="title">Müügi hitid</span>
+      <v-btn class="add-button" color="primary" prepend-icon="mdi-plus" to="/addJoke">Lisa oma nali</v-btn>
       <template v-for="joke in jokes">
         <v-card class="v_card" color="secondary" variant="elevated">
           <v-row>
@@ -53,16 +56,25 @@ const jokes = ref([
 </script>
 
 <style scoped>
+.welcoming-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+  margin-top: 75px;
+}
 .welcoming_text {
   font-size: 2em;
-  text-align: center;
-  margin-top: 75px;
   color: white;
 }
 
 .shop_btn {
-  margin-top: 50px;
-  margin-left: 40%;
+  margin-top: 30px;
+  max-width: 150px;
+}
+
+.add-button {
+  margin-left: 10px;
 }
 
 .v_image {
@@ -85,6 +97,7 @@ const jokes = ref([
   text-underline-offset: 15px;
   text-decoration: underline;
   text-align: left;
+  margin-right: 97px;
 }
 .card_title {
   color: white;

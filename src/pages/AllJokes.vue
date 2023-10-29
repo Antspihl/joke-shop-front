@@ -20,7 +20,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import {computed, onMounted, Ref, ref} from "vue";
+import {computed, onBeforeMount, Ref, ref} from "vue";
 import axios from "axios";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
@@ -34,6 +34,7 @@ interface Joke {
   setup: string;
   punchline: string;
   price: number;
+  rating: number;
   timesBought: number;
   showDialog: boolean;
   showPunchline?: boolean;
@@ -44,6 +45,7 @@ const currentDialogJoke = ref<Joke>({
   setup: "",
   punchline: "",
   price: 0,
+  rating: 3,
   timesBought: 0,
   showDialog: false,
   showPunchline: false
@@ -89,7 +91,7 @@ const getJokes = async () => {
   }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
   getJokes();
 });
 </script>
