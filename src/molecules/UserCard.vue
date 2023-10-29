@@ -4,21 +4,22 @@
       <v-card-title class="card-title"> {{ user.fullName }} </v-card-title>
       <v-card-text>
         <div class="user-card-column">
-          <div class="user-card-header">User ID</div>
+          <div class="user-card-header">ID</div>
           <div class="user-card-values">{{ user.userId }}
           </div>
         </div>
         <div class="user-card-column">
-          <div class="user-card-header">Username</div>
+          <div class="user-card-header">Kasutajanimi</div>
           <div class="user-card-values">{{ user.username }}</div>
         </div>
         <div class="user-card-column">
-          <div class="user-card-header">Email</div>
+          <div class="user-card-header">E-post</div>
           <div class="user-card-values">{{ user.email }}</div>
         </div>
         <div class="user-card-column">
-          <div class="user-card-header">Admin</div>
-          <div class="user-card-values">{{ user.isAdmin === "true" ? "yes" : "no"}}</div>
+          <div class="user-card-header">Administraator</div>
+          <div class="user-card-values">{{ user.isAdmin === "true" ? "Jah" : "Ei"}}</div>
+          <div class="user-card-values">{{ user.isAdmin}}</div>
         </div>
       </v-card-text>
     </v-card>
@@ -52,11 +53,6 @@ const { user } = toRefs(props);
 .user-card-header {
   color: white;
   font-size: 0.675rem;
-  //background-color: grey;
-}
-
-.user-card-values {
-  //background-color: #677474;
 }
 
 .v_btn {
@@ -69,6 +65,5 @@ const { user } = toRefs(props);
   width: 25%;
   float: left;
   margin-bottom: 0.5rem;
-  //background-color: grey;
 }
 </style>
