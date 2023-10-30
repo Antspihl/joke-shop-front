@@ -20,7 +20,12 @@ const routes = [
         path: 'users',
         name: 'AllUsers',
         component: () => import(/* webpackChunkName: "home" */ '@/views/UsersView.vue'),
-      }
+      },
+      {
+        path: 'addJoke',
+        name: 'AddJoke',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/JokeSubmissionForm.vue')
+      },
     ],
   },
 ]
