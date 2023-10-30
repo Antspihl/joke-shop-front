@@ -22,3 +22,4 @@ deploy frontend:
     - cd /opt/lyhike-nimi/frontend
     - docker-compose down
     - docker-compose up -d
+
