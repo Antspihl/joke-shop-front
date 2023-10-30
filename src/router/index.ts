@@ -1,4 +1,4 @@
-// Composables
+  // Composables
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -15,6 +15,11 @@ const routes = [
         path: 'jokes',
         name: 'AllJokes',
         component: () => import(/* webpackChunkName: "home" */ '@/views/JokesView.vue'),
+      },
+      {
+        path: 'users',
+        name: 'AllUsers',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/UsersView.vue'),
       },
       {
         path: 'addJoke',
