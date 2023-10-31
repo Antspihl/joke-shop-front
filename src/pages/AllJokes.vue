@@ -27,7 +27,8 @@ import JokeDialog from "@/molecules/JokeDialog.vue";
 
 // const jokes_url: string = "http://localhost:8080/api/jokes/setups";
 const jokes_url: string = "http://193.40.156.35:8080/api/jokes/setups";
-const buy_url: string = "http://localhost:8080/api/jokes/buy/";
+// const buy_url: string = "http://localhost:8080/api/jokes/buy/";
+const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
 
 interface Joke {
@@ -38,7 +39,7 @@ interface Joke {
   rating: number;
   timesBought: number;
   showDialog: boolean;
-  showPunchline?: boolean;
+  showPunchline: boolean;
 }
 
 const currentDialogJoke = ref<Joke>({
@@ -87,6 +88,11 @@ const getJokes = async () => {
     const response = await axios.get(jokes_url);
     jokes.value = response.data;
     jokes.value.sort((a: Joke, b: Joke) => a.id - b.id);
+    jokes.value.forEach(joke => {
+      joke.showPunchline = false;
+      joke.showDialog = false;
+    })
+    console.log(jokes.value);
   } catch (error) {
     console.error(error);
   }

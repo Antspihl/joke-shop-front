@@ -4,6 +4,7 @@
       <v-card-title class="card-title">{{ joke.setup }}</v-card-title>
       <v-card-subtitle class="card-subtitle">Hind: {{ joke.price }}€</v-card-subtitle>
       <v-card-actions>
+        <v-btn @click="console.log(joke)">nupp</v-btn>
         <v-btn class="buy-button" color="primary" @click="$emit('openDialog', joke.id)">
           <span v-if="joke.showPunchline">Vaata</span>
           <span v-else>Osta</span>
@@ -27,7 +28,8 @@ interface Joke {
   price: number;
   rating: number;
   timesBought: number;
-  showPunchline?: boolean;
+  showDialog: boolean;
+  showPunchline: boolean;
 }
 
 const props = defineProps<{
