@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
+import {toRefs} from 'vue';
 interface Joke {
   id: number;
   setup: string;
