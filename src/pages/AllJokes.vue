@@ -25,9 +25,7 @@ import axios from "axios";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 
-// const jokes_url: string = "http://localhost:8080/api/jokes/setups";
 const jokes_url: string = "http://193.40.156.35:8080/api/jokes/setups";
-// const buy_url: string = "http://localhost:8080/api/jokes/buy/";
 const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
 
