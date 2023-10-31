@@ -18,14 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
+import {toRefs} from 'vue';
 interface Joke {
   id: number;
   setup: string;
   punchline: string;
   price: number;
   timesBought: number;
-  showDialog: Boolean;
+  showDialog: boolean;
   showPunchline?: boolean;
 }
 

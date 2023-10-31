@@ -19,7 +19,7 @@
         <div class="user-card-column">
           <div class="user-card-header">Administraator</div>
           <div class="user-card-values">{{ user.isAdmin === "true" ? "Jah" : "Ei"}}</div>
-          <div class="user-card-values">{{ user.isAdmin}}</div>
+<!--          <div class="user-card-values">{{ user.isAdmin}}</div>-->
         </div>
       </v-card-text>
     </v-card>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
+import {toRefs} from 'vue';
 interface User {
   userId: number;
   username: string;

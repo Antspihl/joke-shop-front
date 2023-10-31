@@ -32,7 +32,7 @@
                 v-model="joke.rating"
                 color="primary"
                 density="compact"
-                readonly="true"/>
+                :readonly="true"/>
             </v-col>
           </v-row>
         </v-card>

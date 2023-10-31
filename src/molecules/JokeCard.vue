@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
+import {toRefs} from 'vue';
 interface Joke {
   id: number;
   setup: string;
@@ -27,7 +27,8 @@ interface Joke {
   price: number;
   rating: number;
   timesBought: number;
-  showPunchline?: boolean;
+  showDialog: boolean;
+  showPunchline: boolean;
 }
 
 const props = defineProps<{
