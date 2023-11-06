@@ -1,8 +1,8 @@
 <template>
   <v-col cols="12" sm="6" md="4">
-    <v-card color="secondary">
-      <v-card-title class="card-title">{{ joke.setup }}</v-card-title>
-      <v-card-subtitle class="card-subtitle">Hind: {{ joke.price }}€</v-card-subtitle>
+    <v-card color="secondary" class="joke_card">
+      <v-card-title class="card_title">{{ joke.setup }}</v-card-title>
+      <v-card-subtitle class="card_subtitle">Hind: {{ joke.price }}€</v-card-subtitle>
       <v-card-actions>
         <v-btn class="buy-button" color="primary" @click="$emit('openDialog', joke.id)">
           <span v-if="joke.showPunchline">Vaata</span>
@@ -39,7 +39,7 @@ const { joke } = toRefs(props);
 </script>
 <style scoped>
 .buy-button {
-  background-color: #D7D3Ae;
+  padding-left: 10px;
   margin-right: 55px;
 }
 .card_title {

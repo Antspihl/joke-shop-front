@@ -12,47 +12,100 @@
     <v-container class="bottom_div">
     <span class="title">Müügi hitid</span>
       <v-btn class="add-button" color="primary" prepend-icon="mdi-plus" to="/addJoke">Lisa oma nali</v-btn>
-      <template v-for="joke in jokes">
-        <v-card class="v_card" color="secondary" variant="elevated">
-          <v-row>
-            <v-card-title class="card_title">
-              {{ joke.setup }}
-            </v-card-title>
-          </v-row>
-          <v-row>
-            <v-img
-              class="v_image"
-              :src="joke.image"
-            ></v-img>
-            <v-col>
-              <v-card-subtitle class="card_subtitle">
-                Hind: {{ joke.price }}€
-              </v-card-subtitle>
-              <v-rating
-                v-model="joke.rating"
-                color="primary"
-                density="compact"
-                :readonly="true"/>
-            </v-col>
-          </v-row>
-        </v-card>
-      </template>
+        <JokeCard
+          class = "v_card"
+          v-for="joke in jokes"
+          :key="joke.id"
+          :joke="joke"
+          @openDialog="openDialog"
+        />
+        <JokeDialog
+          v-if="showDialog"
+          :joke="currentDialogJoke"
+          @closeDialog="closeDialog"
+          @buyJoke="buyJoke"
+        />
     </v-container>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import {computed, onBeforeMount, Ref, ref} from "vue";
+import axios from "axios";
+import JokeDialog from "@/molecules/JokeDialog.vue";
+import JokeCard from "@/molecules/JokeCard.vue";
 
-const jokes = ref([
-  {setup: "Mis oli triikraudade võistluse tulemus?", price: 3, image: "https://picsum.photos/200", rating: 5},
-  {setup: "Eestlane, venelane ja sakslane kõnnivad baari", price: 5, image: "https://picsum.photos/200", rating: 4},
-  {
-    setup: "Mis on need 3 asja, mis mulle kunagi meelde ei tule?",
-    price: 10,
-    image: "https://picsum.photos/200",
-    rating: 3
-  },
-])
+const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
+const top3_url: string = "http://193.40.156.35:8080/api/jokes/top3";
+const jokes: Ref<Joke[]> = ref<Joke[]>([]);
+
+interface Joke {
+  id: number;
+  setup: string;
+  punchline: string;
+  price: number;
+  rating: number;
+  timesBought: number;
+  showDialog: boolean;
+  showPunchline: boolean;
+}
+
+const currentDialogJoke = ref<Joke>({
+  id: 0,
+  setup: "",
+  punchline: "",
+  price: 0,
+  rating: 3,
+  timesBought: 0,
+  showDialog: false,
+  showPunchline: false
+});
+
+const showDialog = computed(() => {
+  return currentDialogJoke.value.showDialog;
+})
+
+const openDialog = (id: number) => {
+  setCurrentJokeById(id);
+  currentDialogJoke.value.showDialog = true;
+
+}
+
+const closeDialog = () => {
+  currentDialogJoke.value.showDialog = false;
+}
+
+const setCurrentJokeById = (id: number) => {
+  currentDialogJoke.value = jokes.value.find(joke => joke.id === id)!;
+}
+
+const buyJoke = async (id: number) => {
+  try {
+    console.log("Buying joke")
+    const response = await axios.get(buy_url + id);
+    currentDialogJoke.value.punchline = response.data.punchline;
+    currentDialogJoke.value.showPunchline = true
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const getTop3Jokes = async() => {
+  try {
+    console.log("Getting top3 jokes")
+    const response = await axios.get(top3_url);
+    jokes.value = response.data;
+    jokes.value.forEach(joke => {
+      joke.showPunchline = false;
+      joke.showDialog = false;
+    })
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onBeforeMount(() => {
+  getTop3Jokes();
+});
 </script>
 
 <style scoped>
@@ -77,13 +130,6 @@ const jokes = ref([
   margin-left: 10px;
 }
 
-.v_image {
-  max-width: 120px;
-  aspect-ratio: 1.5;
-  margin-right: 12px;
-  margin-bottom: 20px;
-}
-
 .v_card {
   max-width: 500px;
   margin-top: 15px;
@@ -98,17 +144,6 @@ const jokes = ref([
   text-decoration: underline;
   text-align: left;
   margin-right: 97px;
-}
-.card_title {
-  color: white;
-  padding-top: 15px;
-  padding-left: 22px;
-}
-
-.card_subtitle {
-  padding-left: 0;
-  padding-bottom: 5px;
-  color: white;
 }
 
 .bottom_div {
