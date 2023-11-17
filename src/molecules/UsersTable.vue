@@ -30,10 +30,10 @@ const headers: ReadonlyDataTableHeader[] = [
     key: 'userId',
     title: 'ID',
     value: 'userId',
-    sortable: false,
+    sortable: true,
   },
-  { key: 'username', title: 'Kasutajanimi', value: 'username', sortable: false, },
-  { key: 'email', title: 'E-post', value: 'email', sortable: false, },
+  { key: 'username', title: 'Kasutajanimi', value: 'username', sortable: true, },
+  { key: 'email', title: 'E-post', value: 'email', sortable: true, },
   { key: 'isAdmin', title: 'Administraator', sortable: false, },
   { key: 'delete', title: '', sortable: false,}
 ];
