@@ -19,15 +19,7 @@
 
 <script setup lang="ts">
 import {toRefs} from 'vue';
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline?: boolean;
-}
+import {Joke} from "@/molecules/types";
 
 const props = defineProps<{
   joke: Joke;

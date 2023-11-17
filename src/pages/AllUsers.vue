@@ -3,31 +3,18 @@
     <div class="header-title">
       <h1>Kasutajad</h1>
     </div>
-    <v-row>
-      <UserCard
-        v-for="user in users"
-        :key="user.userId"
-        :user="user"
-      />
-    </v-row>
+    <UsersTable :users="users"/>
   </v-container>
 </template>
 <script setup lang="ts">
 import {onMounted, Ref, ref} from "vue";
 import axios from "axios";
-import UserCard from "@/molecules/UserCard.vue";
+import {User} from "@/molecules/types";
+import UsersTable from "@/molecules/UsersTable.vue";
 
 // const users_url: string = "http://localhost:8080/api/users/all";
 const users_url: string = "http://193.40.156.35:8080/api/users/all";
 const users: Ref<User[]> = ref<User[]>([]);
-
-interface User {
-  userId: number;
-  username: string;
-  fullName: string;
-  email: string;
-  isAdmin: string;
-}
 
 const getUsers = async () => {
   try {

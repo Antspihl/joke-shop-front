@@ -24,21 +24,11 @@ import {computed, onBeforeMount, Ref, ref} from "vue";
 import axios from "axios";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
+import {Joke} from "@/molecules/types";
 
 const jokes_url: string = "http://193.40.156.35:8080/api/jokes/setups";
 const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
-
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  rating: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline: boolean;
-}
 
 const currentDialogJoke = ref<Joke>({
   id: 0,

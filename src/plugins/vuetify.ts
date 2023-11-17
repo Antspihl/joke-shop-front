@@ -26,6 +26,7 @@ export default createVuetify({
       },
       oppenheimer: {
         colors: {
+          surface: '#C49859',
           primary: '#1E3340',
           secondary: '#C49859',
           accent: '#D7D3Ae',
