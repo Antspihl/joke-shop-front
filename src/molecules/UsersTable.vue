@@ -1,7 +1,17 @@
 <template>
+  <v-responsive
+      max-width="900"
+  >
+  <v-text-field
+    v-model="search"
+    label="Otsi"
+    clearable="true"
+   />
+  </v-responsive>
   <VDataTable
     :headers="headers"
     :items="users"
+    :search="search"
     class="custom-users-table"
   >
     <template v-slot:item.isAdmin="{ item }">
@@ -17,9 +27,12 @@
 
 import {User} from "@/molecules/types";
 import {VDataTable} from "vuetify/labs/VDataTable";
+import {ref} from "vue";
 type ReadonlyHeaders = InstanceType<typeof VDataTable>['headers']
 type UnwrapReadonlyArray<A> = A extends Readonly<Array<infer I>> ? I : never;
 type ReadonlyDataTableHeader = UnwrapReadonlyArray<ReadonlyHeaders>;
+
+const search = ref('')
 
 const props = defineProps<{
   users: User[];
