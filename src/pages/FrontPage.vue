@@ -11,7 +11,7 @@
   </v-container>
     <v-container class="bottom_div">
     <span class="title">Müügi hitid</span>
-      <v-btn class="add-button" color="primary" prepend-icon="mdi-plus" to="/addJoke">Lisa oma nali</v-btn>
+      <v-btn color="primary" prepend-icon="mdi-plus" to="/addJoke">Lisa oma nali</v-btn>
         <JokeCard
           class = "v_card"
           v-for="joke in jokes"
@@ -33,21 +33,11 @@ import {computed, onBeforeMount, Ref, ref} from "vue";
 import axios from "axios";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import JokeCard from "@/molecules/JokeCard.vue";
+import {Joke} from "@/molecules/types";
 
 const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const top3_url: string = "http://193.40.156.35:8080/api/jokes/top3";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
-
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  rating: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline: boolean;
-}
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -124,10 +114,6 @@ onBeforeMount(() => {
 .shop_btn {
   margin-top: 30px;
   max-width: 150px;
-}
-
-.add-button {
-  margin-left: 10px;
 }
 
 .v_card {

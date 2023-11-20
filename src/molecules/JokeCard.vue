@@ -20,16 +20,7 @@
 
 <script setup lang="ts">
 import {toRefs} from 'vue';
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  rating: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline: boolean;
-}
+import {Joke} from "@/molecules/types";
 
 const props = defineProps<{
   joke: Joke;
@@ -55,6 +46,6 @@ const { joke } = toRefs(props);
 }
 
 .joke_card {
-  min-width: 400px;
+  max-width: 600px;
 }
 </style>
