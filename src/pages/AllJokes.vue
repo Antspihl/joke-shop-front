@@ -20,30 +20,22 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import {computed, onMounted, Ref, ref} from "vue";
+import {computed, onBeforeMount, Ref, ref} from "vue";
 import axios from "axios";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
+import {Joke} from "@/molecules/types";
 
-const jokes_url: string = "http://localhost:8080/api/jokes/setups";
-const buy_url: string = "http://localhost:8080/api/jokes/buy/";
+const jokes_url: string = "http://193.40.156.35:8080/api/jokes/setups";
+const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
-
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline?: boolean;
-}
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
   setup: "",
   punchline: "",
   price: 0,
+  rating: 3,
   timesBought: 0,
   showDialog: false,
   showPunchline: false
@@ -84,12 +76,17 @@ const getJokes = async () => {
     const response = await axios.get(jokes_url);
     jokes.value = response.data;
     jokes.value.sort((a: Joke, b: Joke) => a.id - b.id);
+    jokes.value.forEach(joke => {
+      joke.showPunchline = false;
+      joke.showDialog = false;
+    })
+    console.log(jokes.value);
   } catch (error) {
     console.error(error);
   }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
   getJokes();
 });
 </script>

@@ -18,16 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
-interface Joke {
-  id: number;
-  setup: string;
-  punchline: string;
-  price: number;
-  timesBought: number;
-  showDialog: boolean;
-  showPunchline?: boolean;
-}
+import {toRefs} from 'vue';
+import {Joke} from "@/molecules/types";
 
 const props = defineProps<{
   joke: Joke;

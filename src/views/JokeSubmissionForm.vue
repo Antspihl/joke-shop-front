@@ -23,7 +23,7 @@ import { ref } from "vue";
 import Form from "vform";
 import axios from "axios";
 
-const backendUrl = "http://localhost:8080/api/jokes/add"
+const backendUrl = "http://193.40.156.35:8080/api/jokes/add"
 
 const formFields = {
   setup: "Setup",
