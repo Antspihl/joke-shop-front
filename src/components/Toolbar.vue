@@ -67,34 +67,8 @@ import {ref} from "vue";
 import {useTheme} from "vuetify";
 import {useVuelidate} from '@vuelidate/core'
 import LoginDialog from "@/molecules/LoginDialog.vue";
-import RegisterDialog from "@/molecules/RegisterDialog.vue";
 import {email, minLength, required} from "@vuelidate/validators";
 
-interface Login {
-  username: string;
-  password: string;
-  showDialog: boolean;
-}
-
-interface Register {
-  username: string;
-  password: string;
-  email: string;
-  showDialog: boolean;
-}
-
-
-const login = ref<Login>({
-  username: "",
-  password: "",
-  showDialog: false
-});
-const register = ref<Register>({
-  username: "",
-  password: "",
-  email: "",
-  showDialog: false
-});
 
 const loginRules = {
   username: {
@@ -120,7 +94,6 @@ const registerRules = {
     email: email
   }
 }
-const registerValidation = useVuelidate(registerRules, register)
 const loginValidation = useVuelidate(loginRules, login)
 
 const logUserIn = (username: string, password: string) => {
@@ -135,11 +108,7 @@ const closeLoginDialog = () => {
   login.value.showDialog = false;
 }
 
-const registerUser = (username: string, password: string, email: string) => {
-  registerValidation.value.$touch();
-  console.log("Registering user" + username + password + email);
 
-}
 const openRegisterDialog = () => {
   register.value.showDialog = true;
 }

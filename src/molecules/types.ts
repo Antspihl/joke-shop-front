@@ -6,6 +6,19 @@ export type User = {
   isAdmin: boolean;
 }
 
+export type Register = {
+  username: string;
+  fullName: string;
+  password: string;
+  email: string;
+  showDialog: boolean;
+}
+
+export type Login = {
+  username: string;
+  password: string;
+}
+
 export type Joke = {
   id: number;
   setup: string;

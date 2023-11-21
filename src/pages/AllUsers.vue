@@ -8,23 +8,15 @@
 </template>
 <script setup lang="ts">
 import {onMounted, Ref, ref} from "vue";
-import axios from "axios";
 import {User} from "@/molecules/types";
 import UsersTable from "@/molecules/UsersTable.vue";
+import {fetchUsers} from "@/api/requestHandler";
 
-// const users_url: string = "http://localhost:8080/api/users/all";
-const users_url: string = "http://193.40.156.35:8080/api/users/all";
 const users: Ref<User[]> = ref<User[]>([]);
 
 const getUsers = async () => {
-  try {
-    console.log("Getting users")
-    const response = await axios.get(users_url);
-    users.value = response.data;
-    users.value.sort((a: User, b: User) => a.userId - b.userId);
-  } catch (error) {
-    console.error(error);
-  }
+  users.value = await fetchUsers()
+  users.value.sort((a: User, b: User) => a.userId - b.userId);
 }
 
 onMounted(() => {

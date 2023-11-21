@@ -21,13 +21,11 @@
 </template>
 <script setup lang="ts">
 import {computed, onBeforeMount, Ref, ref} from "vue";
-import axios from "axios";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import {Joke} from "@/molecules/types";
+import {buyJokeWithId, fetchSetups} from "@/api/requestHandler";
 
-const jokes_url: string = "http://193.40.156.35:8080/api/jokes/setups";
-const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
 const jokes: Ref<Joke[]> = ref<Joke[]>([]);
 
 const currentDialogJoke = ref<Joke>({
@@ -60,30 +58,18 @@ const setCurrentJokeById = (id: number) => {
 }
 
 const buyJoke = async (id: number) => {
-  try {
-    console.log("Buying joke")
-    const response = await axios.get(buy_url + id);
-    currentDialogJoke.value.punchline = response.data.punchline;
-    currentDialogJoke.value.showPunchline = true
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await buyJokeWithId(id);
+  currentDialogJoke.value.punchline = response.punchline;
+  currentDialogJoke.value.showPunchline = true
 }
 
 const getJokes = async () => {
-  try {
-    console.log("Getting jokes")
-    const response = await axios.get(jokes_url);
-    jokes.value = response.data;
-    jokes.value.sort((a: Joke, b: Joke) => a.id - b.id);
-    jokes.value.forEach(joke => {
-      joke.showPunchline = false;
-      joke.showDialog = false;
-    })
-    console.log(jokes.value);
-  } catch (error) {
-    console.error(error);
-  }
+  jokes.value = await fetchSetups();
+  jokes.value.forEach(joke => {
+    joke.showPunchline = false;
+    joke.showDialog = false;
+  })
+  console.log("Got jokes", jokes.value);
 }
 
 onBeforeMount(() => {

@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import {defineProps, toRefs} from 'vue';
+import {Register} from "@/molecules/types";
+import {useVuelidate} from "@vuelidate/core";
+import RegisterDialog from "@/molecules/RegisterDialog.vue";
 
-interface Register {
-  username: string;
-  password: string;
-  email: string;
-  showDialog: boolean;
-}
+
+
 
 const props = defineProps<{
   register: Register;
 }>();
 
 const {register} = toRefs(props);
+
+const registerValidation = useVuelidate(registerRules, register)
+const registerUser = (username: string, password: string, email: string) => {
+  registerValidation.value.$touch();
+  console.log("Registering user" + username + password + email);
+
+}
+
 </script>
 
 <template>
@@ -24,6 +31,11 @@ const {register} = toRefs(props);
       <v-card-text>
         <v-responsive>
           <v-form>
+            <v-text-field
+              v-model="register.fullName"
+              label="Täisnimi"
+              required
+            ></v-text-field>
             <v-text-field
                 v-model="register.username"
                 label="Kasutajanimi"
