@@ -24,9 +24,12 @@ import {computed, onBeforeMount, Ref, ref} from "vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import {Joke} from "@/molecules/types";
-import {buyJokeWithId, fetchSetups} from "@/api/requestHandler";
+import {buyJokeWithId} from "@/api/requestHandler";
+import {useMainStore} from "@/api/MainStore";
 
-const jokes: Ref<Joke[]> = ref<Joke[]>([]);
+const mainStore = useMainStore()
+const loadingJokes = ref(false)
+const jokes = computed(() => mainStore.getJokes)
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -63,17 +66,9 @@ const buyJoke = async (id: number) => {
   currentDialogJoke.value.showPunchline = true
 }
 
-const getJokes = async () => {
-  jokes.value = await fetchSetups();
-  jokes.value.forEach(joke => {
-    joke.showPunchline = false;
-    joke.showDialog = false;
-  })
-  console.log("Got jokes", jokes.value);
-}
-
 onBeforeMount(() => {
-  getJokes();
+  loadingJokes.value = true;
+  mainStore.fetchSetups().then(() => loadingJokes.value = false)
 });
 </script>
 

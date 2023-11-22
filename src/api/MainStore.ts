@@ -7,18 +7,23 @@ export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
     users: [] as User[],
-    setups: [] as string[],
+    setups: [] as Joke[],
     top3: [] as Joke[]
   }),
   getters: {
     getUsers(state): User[] { return state.users },
+    getJokes(state): Joke[] { return state.setups },
+    getTop3(state): Joke[] { return state.top3 }
   },
   actions: {
     async fetchSetups() {
       try {
         const response = await axios.get(API_URL + "/jokes/setups");
-        this.setups = response.data
-
+        response.data.forEach((joke: Joke) => {
+          joke.showDialog = false;
+          joke.showPunchline = false;
+        });
+        this.setups = response.data;
       } catch (error) {
         console.error("Error fetching setups", error);
       }
@@ -26,8 +31,11 @@ export const useMainStore = defineStore('main', {
     async fetchTop3Setups() {
       try {
         const response = await axios.get(API_URL + "/jokes/top3");
+        response.data.forEach((joke: Joke) => {
+          joke.showDialog = false;
+          joke.showPunchline = false;
+        });
         this.top3 = response.data
-
       } catch (error) {
         console.error("Error fetching top 3 setups", error);
       }

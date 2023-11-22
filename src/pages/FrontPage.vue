@@ -33,9 +33,12 @@ import {computed, onBeforeMount, Ref, ref} from "vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import {Joke} from "@/molecules/types";
-import {buyJokeWithId, fetchTop3Setups} from "@/api/requestHandler";
+import {buyJokeWithId} from "@/api/requestHandler";
+import {useMainStore} from "@/api/MainStore";
 
-const jokes: Ref<Joke[]> = ref<Joke[]>([]);
+const mainStore = useMainStore()
+const loadingTop3Jokes = ref(false)  // todo how to use this inside template?
+const jokes = computed(() => mainStore.getTop3)
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -72,17 +75,9 @@ const buyJoke = async (id: number) => {
   currentDialogJoke.value.showPunchline = true
 }
 
-const getTop3Jokes = async() => {
-  jokes.value = await fetchTop3Setups()
-  jokes.value.forEach(joke => {
-    joke.showPunchline = false;
-    joke.showDialog = false;
-  })
-  console.log("Got top 3 jokes", jokes.value);
-}
-
 onBeforeMount(() => {
-  getTop3Jokes();
+  loadingTop3Jokes.value = true;
+  mainStore.fetchTop3Setups().then(() => loadingTop3Jokes.value = false);
 });
 </script>
 
