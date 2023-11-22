@@ -11,7 +11,6 @@ export type Register = {
   fullName: string;
   password: string;
   email: string;
-  showDialog: boolean;
 }
 
 export type Login = {
@@ -29,4 +28,3 @@ export type Joke = {
   showDialog: boolean;
   showPunchline: boolean;
 }
-

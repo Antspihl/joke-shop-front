@@ -42,7 +42,7 @@
           <h4>Registreeri</h4>
         </v-btn>
         <v-btn
-            @click="openLoginDialog"
+            @click.stop="openLoginDialog"
         >
           <h4>Logi sisse</h4>
         </v-btn>
@@ -50,70 +50,41 @@
     </v-menu>
   </v-toolbar>
 
-  <LoginDialog
-      v-if="login.showDialog"
-      @closeDialog="closeLoginDialog"
-      @logUserIn="logUserIn"
-      :login="login"/>
   <RegisterDialog
-      v-if="register.showDialog"
+      v-model="showRegisterDialog"
+      v-if="showRegisterDialog"
       @closeDialog="closeRegisterDialog"
-      @registerUser="registerUser"
-      :register="register"/>
+  />
+  <LoginDialog
+      v-model="showLoginDialog"
+      v-if="showLoginDialog"
+      @closeDialog="closeLoginDialog"
+  />
 </template>
 
 <script lang="ts" setup>
 import {ref} from "vue";
 import {useTheme} from "vuetify";
-import {useVuelidate} from '@vuelidate/core'
 import LoginDialog from "@/molecules/LoginDialog.vue";
-import {email, minLength, required} from "@vuelidate/validators";
+import RegisterDialog from "@/molecules/RegisterDialog.vue";
 
+const showLoginDialog = ref(false);
+const showRegisterDialog = ref(false);
 
-const loginRules = {
-  username: {
-    required: required,
-    minLength: minLength(3)
-  },
-  password: {
-    required: required,
-    minLength: minLength(8)
-  }
+function openLoginDialog() {
+  console.log('here')
+  showLoginDialog.value = true;
+  console.log(showLoginDialog.value)
 }
-const registerRules = {
-  username: {
-    required: required,
-    minLength: minLength(3)
-  },
-  password: {
-    required: required,
-    minLength: minLength(8)
-  },
-  email: {
-    required: required,
-    email: email
-  }
+function closeLoginDialog() {
+  showLoginDialog.value = false;
 }
-const loginValidation = useVuelidate(loginRules, login)
-
-const logUserIn = (username: string, password: string) => {
-  loginValidation.value.$touch();
-  console.log("Logging user in" + username + password)
-
-}
-const openLoginDialog = () => {
-  login.value.showDialog = true;
-}
-const closeLoginDialog = () => {
-  login.value.showDialog = false;
-}
-
 
 const openRegisterDialog = () => {
-  register.value.showDialog = true;
+  showRegisterDialog.value = true;
 }
 const closeRegisterDialog = () => {
-  register.value.showDialog = false;
+  showRegisterDialog.value = false;
 }
 
 const pages = ref([

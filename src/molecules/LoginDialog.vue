@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import {defineProps, toRefs} from 'vue';
+import {minLength, required} from "@vuelidate/validators";
+import {Login} from "@/molecules/types";
+import {ref} from "vue";
+import {useVuelidate} from "@vuelidate/core";
 
-interface Login {
-  username: string;
-  password: string;
-  showDialog: boolean;
+const loginRules = {
+  username: {
+    required: required,
+    minLength: minLength(3)
+  },
+  password: {
+    required: required,
+    minLength: minLength(8)
+  }
 }
+console.log('dialog')
 
-const props = defineProps<{
-  login: Login;
-}>();
+const login = ref<Login>({
+  username: "",
+  password: "",
+});
 
-const {login} = toRefs(props);
+const validation = useVuelidate(loginRules, login);
 
 </script>
 
 <template>
-  <v-dialog v-model="login.showDialog" width="auto">
+  <v-dialog width="auto">
     <v-card color="accent" class="dialog-card">
       <v-card-title>
         <span>Logi sisse</span>
@@ -38,7 +48,7 @@ const {login} = toRefs(props);
         </v-responsive>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="$emit('logUserIn', login.username, login.password)">Logi sisse</v-btn>
+        <v-btn color="primary" @click="">Logi sisse</v-btn>
         <v-btn color="error" @click="$emit('closeDialog')">Välju</v-btn>
       </v-card-actions>
     </v-card>
