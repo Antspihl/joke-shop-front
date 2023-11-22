@@ -11,11 +11,14 @@ import {onMounted, Ref, ref} from "vue";
 import {User} from "@/molecules/types";
 import UsersTable from "@/molecules/UsersTable.vue";
 import {fetchUsers} from "@/api/requestHandler";
+import {useMainStore} from "@/api/MainStore";
 
 const users: Ref<User[]> = ref<User[]>([]);
 
 const getUsers = async () => {
-  users.value = await fetchUsers()
+  // users.value = await fetchUsers()
+  users.value = await useMainStore().fetchUsers()
+  console.log("Got users", users.value)
   users.value.sort((a: User, b: User) => a.userId - b.userId);
 }
 
