@@ -5,7 +5,7 @@
   <v-text-field
     v-model="search"
     label="Otsi"
-    clearable="true"
+    :clearable="true"
    />
   </v-responsive>
   <VDataTable
@@ -14,9 +14,6 @@
     :search="search"
     class="custom-users-table"
   >
-    <template v-slot:item.isAdmin="{ item }">
-      {{ item.isAdmin? 'true' : 'false' }}
-    </template>
     <template v-slot:item.delete="{item}">
       <VIcon @click="deleteItem(item)">mdi-delete</VIcon>
     </template>
@@ -28,9 +25,6 @@
 import {User} from "@/molecules/types";
 import {VDataTable} from "vuetify/labs/VDataTable";
 import {ref} from "vue";
-type ReadonlyHeaders = InstanceType<typeof VDataTable>['headers']
-type UnwrapReadonlyArray<A> = A extends Readonly<Array<infer I>> ? I : never;
-type ReadonlyDataTableHeader = UnwrapReadonlyArray<ReadonlyHeaders>;
 
 const search = ref('')
 
@@ -38,7 +32,7 @@ const props = defineProps<{
   users: User[];
 }>();
 
-const headers: ReadonlyDataTableHeader[] = [
+const headers = ref([
   {
     key: 'userId',
     title: 'ID',
@@ -47,11 +41,11 @@ const headers: ReadonlyDataTableHeader[] = [
   },
   { key: 'username', title: 'Kasutajanimi', value: 'username', sortable: true, },
   { key: 'email', title: 'E-post', value: 'email', sortable: true, },
-  { key: 'isAdmin', title: 'Administraator', sortable: false, },
   { key: 'delete', title: '', sortable: false,}
-];
+]);
 
-function deleteItem(item: User) {
+function deleteItem(item: any) {
+  console.log(item)
   ///TODO: adminid võiksid saada usereid kustutada
 
 }
