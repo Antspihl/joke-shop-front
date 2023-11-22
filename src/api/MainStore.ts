@@ -1,18 +1,23 @@
 import {defineStore} from "pinia";
 import axios from "axios";
-import {Login, Register, User} from "@/molecules/types";
+import {Joke, Login, Register, User} from "@/molecules/types";
 
 export const API_URL: string = "http://193.40.156.35:8080/api";
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
     users: [] as User[],
+    setups: [] as string[],
+    top3: [] as Joke[]
   }),
+  getters: {
+    getUsers(state): User[] { return state.users },
+  },
   actions: {
     async fetchSetups() {
       try {
         const response = await axios.get(API_URL + "/jokes/setups");
-        return response.data;
+        this.setups = response.data
 
       } catch (error) {
         console.error("Error fetching setups", error);
@@ -21,7 +26,7 @@ export const useMainStore = defineStore('main', {
     async fetchTop3Setups() {
       try {
         const response = await axios.get(API_URL + "/jokes/top3");
-        return response.data;
+        this.top3 = response.data
 
       } catch (error) {
         console.error("Error fetching top 3 setups", error);
@@ -40,7 +45,6 @@ export const useMainStore = defineStore('main', {
       try {
         const response = await axios.get(API_URL + "/users/all");
         this.users = response.data;
-        return response.data;
       } catch (error) {
         console.error("Error fetching users", error);
       }

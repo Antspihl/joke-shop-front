@@ -14,7 +14,7 @@
     "@vuelidate/validators": "^2.0.4",
     "core-js": "^3.8.3",
     "package-lock.json": "^1.0.0",
-    "package.json": "^2.0.1",
+    "package.json": "^0.0.0",
     "pinia": "^2.1.6",
     "roboto-fontface": "*",
     "vform": "^2.1.2",
