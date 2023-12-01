@@ -58,10 +58,13 @@ export const useMainStore = defineStore('main', {
       }
     },
     async registerUser(register: Register) {
+      console.log(register)
       try {
         const response = await axios.post(
-          API_URL + "/auth/register",
-          JSON.stringify(register)
+          API_URL + "/auth/register", register, { headers: {
+                'Content-Type': 'application/json'
+              }
+          }
         );
 
       } catch (error) {
@@ -72,7 +75,10 @@ export const useMainStore = defineStore('main', {
       try {
         const response = await axios.post(
           API_URL + "/auth/login",
-          JSON.stringify(login)
+          login, { headers: {
+                'Content-Type': 'application/json'
+              }
+          }
         );
 
       } catch (error) {

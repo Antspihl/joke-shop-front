@@ -72,9 +72,7 @@ const showLoginDialog = ref(false);
 const showRegisterDialog = ref(false);
 
 function openLoginDialog() {
-  console.log('here')
   showLoginDialog.value = true;
-  console.log(showLoginDialog.value)
 }
 function closeLoginDialog() {
   showLoginDialog.value = false;

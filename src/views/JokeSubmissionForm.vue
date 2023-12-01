@@ -50,7 +50,7 @@ const loading = ref(false)
 
 const handleSubmit = async () => {
   loading.value = true
-  console.log(formData.value)
+
   try {
     await axios.post(backendUrl, formData.value.data(), {
       headers: {
