@@ -28,7 +28,7 @@
       </template>
     </v-switch>
 
-    <v-menu :close-on-content-click="false">
+    <v-menu v-if="!userLoggedIn" :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-account-circle" v-bind="props">
           :
@@ -42,7 +42,7 @@
           <h4>Registreeri</h4>
         </v-btn>
         <v-btn
-            @click.stop="openLoginDialog"
+            @click="openLoginDialog"
         >
           <h4>Logi sisse</h4>
         </v-btn>
@@ -54,11 +54,13 @@
       v-model="showRegisterDialog"
       v-if="showRegisterDialog"
       @closeDialog="closeRegisterDialog"
+      @close-dialog-and-log-in="closeRegisterDialogAndOpenLogin"
   />
   <LoginDialog
       v-model="showLoginDialog"
       v-if="showLoginDialog"
       @closeDialog="closeLoginDialog"
+      @closeDialogLoggedIn="closeModalLoggedIn"
   />
 </template>
 
@@ -70,6 +72,7 @@ import RegisterDialog from "@/molecules/RegisterDialog.vue";
 
 const showLoginDialog = ref(false);
 const showRegisterDialog = ref(false);
+const userLoggedIn = ref(false)
 
 function openLoginDialog() {
   showLoginDialog.value = true;
@@ -85,6 +88,15 @@ const closeRegisterDialog = () => {
   showRegisterDialog.value = false;
 }
 
+function closeModalLoggedIn() {
+  showLoginDialog.value = false;
+  userLoggedIn.value = true;
+}
+
+function closeRegisterDialogAndOpenLogin() {
+  showRegisterDialog.value = false;
+  showLoginDialog.value = true;
+}
 const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
