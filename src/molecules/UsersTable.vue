@@ -23,7 +23,6 @@
 <script setup lang="ts">
 
 import {User} from "@/molecules/types";
-import {VDataTable} from "vuetify/labs/VDataTable";
 import {ref} from "vue";
 
 const search = ref('')

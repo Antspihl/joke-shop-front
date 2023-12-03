@@ -3,32 +3,22 @@
     <div class="header-title">
       <h1>Kasutajad</h1>
     </div>
-    <UsersTable :users="users"/>
+    <UsersTable v-if="!loadingUsers" :users="users"/>
   </v-container>
 </template>
 <script setup lang="ts">
-import {onMounted, Ref, ref} from "vue";
-import axios from "axios";
-import {User} from "@/molecules/types";
+import {computed, onMounted, ref} from "vue";
 import UsersTable from "@/molecules/UsersTable.vue";
+import {useMainStore} from "@/api/MainStore";
 
-// const users_url: string = "http://localhost:8080/api/users/all";
-const users_url: string = "http://193.40.156.35:8080/api/users/all";
-const users: Ref<User[]> = ref<User[]>([]);
+const mainStore = useMainStore()
+const loadingUsers = ref(false)
 
-const getUsers = async () => {
-  try {
-    console.log("Getting users")
-    const response = await axios.get(users_url);
-    users.value = response.data;
-    users.value.sort((a: User, b: User) => a.userId - b.userId);
-  } catch (error) {
-    console.error(error);
-  }
-}
+const users = computed(() => mainStore.getUsers)
 
 onMounted(() => {
-  getUsers();
+  loadingUsers.value = true;
+  mainStore.fetchUsers().then(() => loadingUsers.value = false)
 });
 </script>
 

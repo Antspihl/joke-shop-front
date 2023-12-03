@@ -3,8 +3,8 @@
     <v-toolbar-title>
       <v-row>
         <v-img
-          class="v_image"
-          src='/Asendus_logo.png'
+            class="v_image"
+            src='/Asendus_logo.png'
         ></v-img>
         <ul>
           <template v-for="page in pages">
@@ -19,47 +19,84 @@
     </v-toolbar-title>
 
     <v-switch
-      class="theme_switch"
-      v-model="isntOppen"
-      @click="toggleTheme"
+        class="theme_switch"
+        v-model="isntOppen"
+        @click="toggleTheme"
     >
       <template v-slot:prepend>
         <v-icon>mdi-theme-light-dark</v-icon>
       </template>
     </v-switch>
 
-    <v-card
-      class="user_card"
-      color="secondary"
-      v-if="userIsLoggedIn"
-    >
-      <v-card-subtitle>
-        <v-btn>
-          <v-icon>mdi-account</v-icon>
-          {{ username }}
+    <v-menu v-if="!userLoggedIn" :close-on-content-click="false">
+      <template v-slot:activator="{ props }">
+        <v-btn icon="mdi-account-circle" v-bind="props">
+          :
         </v-btn>
-      </v-card-subtitle>
-    </v-card>
-    <v-btn v-if="userIsLoggedIn" @Click="logout">Logi välja</v-btn>
-
-    <v-btn
-      v-else
-      class="login"
-      @Click="login"
-    >Logi sisse
-    </v-btn>
+      </template>
+      <v-col class="v-dropdown">
+        <v-btn
+            class="auth_btn"
+            @click="openRegisterDialog"
+        >
+          <h4>Registreeri</h4>
+        </v-btn>
+        <v-btn
+            @click="openLoginDialog"
+        >
+          <h4>Logi sisse</h4>
+        </v-btn>
+      </v-col>
+    </v-menu>
   </v-toolbar>
+
+  <RegisterDialog
+      v-model="showRegisterDialog"
+      v-if="showRegisterDialog"
+      @closeDialog="closeRegisterDialog"
+      @close-dialog-and-log-in="closeRegisterDialogAndOpenLogin"
+  />
+  <LoginDialog
+      v-model="showLoginDialog"
+      v-if="showLoginDialog"
+      @closeDialog="closeLoginDialog"
+      @closeDialogLoggedIn="closeModalLoggedIn"
+  />
 </template>
 
 <script lang="ts" setup>
 import {ref} from "vue";
 import {useTheme} from "vuetify";
+import LoginDialog from "@/molecules/LoginDialog.vue";
+import RegisterDialog from "@/molecules/RegisterDialog.vue";
 
-const isntOppen = ref(false);
-const theme = useTheme()
+const showLoginDialog = ref(false);
+const showRegisterDialog = ref(false);
+const userLoggedIn = ref(false)
 
-const userIsLoggedIn = ref(false);
-const username = ref("Ilmar");
+function openLoginDialog() {
+  showLoginDialog.value = true;
+}
+function closeLoginDialog() {
+  showLoginDialog.value = false;
+}
+
+const openRegisterDialog = () => {
+  showRegisterDialog.value = true;
+}
+const closeRegisterDialog = () => {
+  showRegisterDialog.value = false;
+}
+
+function closeModalLoggedIn() {
+  showLoginDialog.value = false;
+  userLoggedIn.value = true;
+}
+
+function closeRegisterDialogAndOpenLogin() {
+  showRegisterDialog.value = false;
+  showLoginDialog.value = true;
+}
 const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
@@ -67,13 +104,8 @@ const pages = ref([
   {name: "Kasutajad", path: "/users"}
 ]);
 
-const logout = () => {
-  userIsLoggedIn.value = false;
-}
-const login = () => {
-  userIsLoggedIn.value = true;
-}
-
+const isntOppen = ref(false);
+const theme = useTheme()
 const toggleTheme = () => {
   if (isntOppen.value) {
     theme.global.name.value = 'oppenheimer'
@@ -111,8 +143,15 @@ const toggleTheme = () => {
   margin-right: 10px;
 }
 
-.login {
-  padding-left: 20px;
-  padding-right: 20px;
+.auth_btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.v-dropdown {
+  justify-content: end;
+  padding: 0;
+  width: 130px;
 }
 </style>

@@ -5,6 +5,18 @@ export type User = {
   email: string;
 }
 
+export type Register = {
+  username: string;
+  fullName: string;
+  password: string;
+  email: string;
+}
+
+export type Login = {
+  username: string;
+  password: string;
+}
+
 export type Joke = {
   id: number;
   setup: string;
@@ -15,4 +27,3 @@ export type Joke = {
   showDialog: boolean;
   showPunchline: boolean;
 }
-

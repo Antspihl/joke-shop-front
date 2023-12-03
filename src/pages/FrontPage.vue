@@ -30,14 +30,15 @@
 
 <script lang="ts" setup>
 import {computed, onBeforeMount, Ref, ref} from "vue";
-import axios from "axios";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import {Joke} from "@/molecules/types";
+import {buyJokeWithId} from "@/api/requestHandler";
+import {useMainStore} from "@/api/MainStore";
 
-const buy_url: string = "http://193.40.156.35:8080/api/jokes/buy/";
-const top3_url: string = "http://193.40.156.35:8080/api/jokes/top3";
-const jokes: Ref<Joke[]> = ref<Joke[]>([]);
+const mainStore = useMainStore()
+const loadingTop3Jokes = ref(false)  // todo how to use this inside template?
+const jokes = computed(() => mainStore.getTop3)
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -69,32 +70,14 @@ const setCurrentJokeById = (id: number) => {
 }
 
 const buyJoke = async (id: number) => {
-  try {
-    console.log("Buying joke")
-    const response = await axios.get(buy_url + id);
-    currentDialogJoke.value.punchline = response.data.punchline;
-    currentDialogJoke.value.showPunchline = true
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const getTop3Jokes = async() => {
-  try {
-    console.log("Getting top3 jokes")
-    const response = await axios.get(top3_url);
-    jokes.value = response.data;
-    jokes.value.forEach(joke => {
-      joke.showPunchline = false;
-      joke.showDialog = false;
-    })
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await buyJokeWithId(id);
+  currentDialogJoke.value.punchline = response.punchline;
+  currentDialogJoke.value.showPunchline = true
 }
 
 onBeforeMount(() => {
-  getTop3Jokes();
+  loadingTop3Jokes.value = true;
+  mainStore.fetchTop3Setups().then(() => loadingTop3Jokes.value = false);
 });
 </script>
 
