@@ -1,13 +1,13 @@
 <template>
   <div class="input-wrapper">
-    <label :for="id">{{ label }}</label>
+    <label>{{ label }}</label>
     <input
         class="form-control"
         :type="type"
         :id="id"
         :value="value"
         :autocomplete="autocomplete"
-        @input="$emit('update:value', $event.target.value)"
+        @input="handleInput($event)"
         @blur="$emit('blur')"
     />
     <div v-if="error" class="error-message">
@@ -16,18 +16,24 @@
   </div>
 </template>
 
-<script setup>
-import { defineProps } from 'vue';
+<script setup lang="ts">
+
+const emit = defineEmits(['update:value', 'blur'])
 
 defineProps({
   label: String,
   value: String,
-  id: [String, Number],
+  id: String,
   type: { type: String, default: 'text' },
   error: Boolean,
   errorMessage: String,
   autocomplete: String,
 });
+
+function handleInput(event: Event) {
+  const target = event.target as HTMLInputElement;
+  emit('update:value', target.value);
+}
 </script>
 
 <style scoped>
