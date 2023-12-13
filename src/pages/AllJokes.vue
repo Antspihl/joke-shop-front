@@ -31,16 +31,7 @@ const mainStore = useMainStore()
 const loadingJokes = ref(false)
 const jokes = computed(() => mainStore.getJokes)
 
-const currentDialogJoke = ref<Joke>({
-  id: 0,
-  setup: "",
-  punchline: "",
-  price: 0,
-  rating: 3,
-  timesBought: 0,
-  showDialog: false,
-  showPunchline: false
-});
+const currentDialogJoke = ref<Joke>(<Joke>{});
 
 const showDialog = computed(() => {
   return currentDialogJoke.value.showDialog;

@@ -26,6 +26,11 @@ const routes = [
         name: 'AddJoke',
         component: () => import(/* webpackChunkName: "home" */ '@/views/JokeSubmissionForm.vue')
       },
+      {
+        path: 'userJokes',
+        name: 'UserJokes',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/UserJokes.vue')
+      },
     ],
   },
 ]

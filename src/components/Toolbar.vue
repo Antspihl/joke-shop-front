@@ -28,23 +28,29 @@
       </template>
     </v-switch>
 
-    <v-menu v-if="!userLoggedIn" :close-on-content-click="false">
+    <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ props }">
-        <v-btn icon="mdi-account-circle" v-bind="props">
-          :
-        </v-btn>
+        <v-icon class="mr-6 ml-3" v-bind="props">mdi-account-circle</v-icon>
       </template>
       <v-col class="v-dropdown">
         <v-btn
+          v-if="!userLoggedIn"
             class="auth_btn"
             @click="openRegisterDialog"
         >
           <h4>Registreeri</h4>
         </v-btn>
         <v-btn
+          v-if="!userLoggedIn"
             @click="openLoginDialog"
         >
           <h4>Logi sisse</h4>
+        </v-btn>
+        <v-btn
+          v-if="userLoggedIn"
+          @click="logOut"
+        >
+          <h4>Logi välja</h4>
         </v-btn>
       </v-col>
     </v-menu>
@@ -65,14 +71,14 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {useTheme} from "vuetify";
 import LoginDialog from "@/molecules/LoginDialog.vue";
 import RegisterDialog from "@/molecules/RegisterDialog.vue";
 
 const showLoginDialog = ref(false);
 const showRegisterDialog = ref(false);
-const userLoggedIn = ref(false)
+const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
 function openLoginDialog() {
   showLoginDialog.value = true;
@@ -90,9 +96,12 @@ const closeRegisterDialog = () => {
 
 function closeModalLoggedIn() {
   showLoginDialog.value = false;
-  userLoggedIn.value = true;
 }
 
+function logOut() {
+  localStorage.removeItem('user')
+  window.location.reload()
+}
 function closeRegisterDialogAndOpenLogin() {
   showRegisterDialog.value = false;
   showLoginDialog.value = true;
@@ -100,7 +109,7 @@ function closeRegisterDialogAndOpenLogin() {
 const pages = ref([
   {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
-  {name: "Saak", path: "/"},
+  {name: "Minu naljad", path: "/userJokes"},
   {name: "Kasutajad", path: "/users"}
 ]);
 

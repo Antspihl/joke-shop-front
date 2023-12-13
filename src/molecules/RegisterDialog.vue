@@ -97,8 +97,12 @@ const validation = useVuelidate(validations, {register})!;
 
 async function registerUser() {
   if(!validation.value.$invalid) {
-    await mainStore.registerUser(register.value)
-    emit('closeDialogAndLogIn')
+    try {
+      await mainStore.registerUser(register.value)
+      emit('closeDialogAndLogIn')
+    } catch (error) {
+      console.error("Register failed", error)
+    }
   }
 }
 function validateSecondPassword() {
