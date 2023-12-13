@@ -1,9 +1,10 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import {Joke, Login, Register, User} from "@/molecules/types";
-import {tr} from "vuetify/locale";
 
-export const API_URL: string = "http://193.40.156.35:8080/api";
+
+//export const API_URL: string = "http://193.40.156.35:8080/api";
+export const API_URL: string = "http://localhost:8080/api";
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
