@@ -33,7 +33,6 @@ import {computed, onBeforeMount, Ref, ref} from "vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import {Joke} from "@/molecules/types";
-import {buyJokeWithId} from "@/api/requestHandler";
 import {useMainStore} from "@/api/MainStore";
 
 const mainStore = useMainStore()
@@ -70,7 +69,7 @@ const setCurrentJokeById = (id: number) => {
 }
 
 const buyJoke = async (id: number) => {
-  const response = await buyJokeWithId(id);
+  const response = await mainStore.buyJokeWithId(id);
   currentDialogJoke.value.punchline = response.punchline;
   currentDialogJoke.value.showPunchline = true
 }

@@ -20,8 +20,13 @@ export const useMainStore = defineStore('main', {
   },
   actions: {
     async fetchSetups() {
+      const jwt = localStorage.getItem('user')!
       try {
-        const response = await axios.get(API_URL + "/jokes/setups");
+        const response = await axios.get(API_URL + "/jokes/setups", {
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          }
+        });
         response.data.forEach((joke: Joke) => {
           joke.showDialog = false;
           joke.showPunchline = false;
@@ -48,8 +53,13 @@ export const useMainStore = defineStore('main', {
       }
     },
     async fetchTop3Setups() {
+      const jwt = localStorage.getItem('user')!
       try {
-        const response = await axios.get(API_URL + "/jokes/top3");
+        const response = await axios.get(API_URL + "/jokes/top3", {
+            headers: {
+              'Authorization': `Bearer ${jwt}`
+            },
+          });
         response.data.forEach((joke: Joke) => {
           joke.showDialog = false;
           joke.showPunchline = false;
