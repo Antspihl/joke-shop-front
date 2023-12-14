@@ -3,8 +3,9 @@ import axios from "axios";
 import {Joke, Login, Register, User} from "@/molecules/types";
 
 
-//export const API_URL: string = "http://193.40.156.35:8080/api";
-export const API_URL: string = "http://localhost:8080/api";
+export const API_URL: string = "http://193.40.156.35:8080/api";
+//export const API_URL: string = "http://localhost:8080/api";
+
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
@@ -48,6 +49,7 @@ export const useMainStore = defineStore('main', {
           joke.showDialog = false;
           joke.showPunchline = true;
         });
+        this.userJokes = response.data
       } catch (error) {
         console.error("Error fetching user jokes", error)
       }

@@ -1,7 +1,10 @@
 <template>
   <v-container class="all-jokes">
-    <div class="header-title">
+    <div v-if="!userJokes" class="header-title">
       <h1>Müügil olevad naljad</h1>
+    </div>
+    <div v-if="userJokes" class="header-title">
+      <h1>Naudi oma nalju</h1>
     </div>
     <v-row>
       <JokeCard
@@ -20,15 +23,18 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import {computed, onBeforeMount, ref} from "vue";
+import {computed, ref} from "vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import {Joke} from "@/molecules/types";
 import {useMainStore} from "@/api/MainStore";
 
 const mainStore = useMainStore()
-const loadingJokes = ref(false)
-const jokes = computed(() => mainStore.getJokes)
+
+const props = defineProps<{
+  jokes: Joke[]
+  userJokes: boolean
+}>()
 
 const currentDialogJoke = ref<Joke>(<Joke>{});
 
@@ -36,30 +42,24 @@ const showDialog = computed(() => {
   return currentDialogJoke.value.showDialog;
 })
 
-const openDialog = (id: number) => {
+function openDialog(id: number) {
   setCurrentJokeById(id);
   currentDialogJoke.value.showDialog = true;
-
 }
 
-const closeDialog = () => {
+function closeDialog() {
   currentDialogJoke.value.showDialog = false;
 }
 
-const setCurrentJokeById = (id: number) => {
-  currentDialogJoke.value = jokes.value.find(joke => joke.id === id)!;
+function setCurrentJokeById(id: number) {
+  currentDialogJoke.value = props.jokes.find(joke => joke.id === id)!;
 }
 
-const buyJoke = async (id: number) => {
+async function buyJoke(id: number) {
   const response = await mainStore.buyJokeWithId(id);
   currentDialogJoke.value.punchline = response.punchline;
   currentDialogJoke.value.showPunchline = true
 }
-
-onBeforeMount(() => {
-  loadingJokes.value = true;
-  mainStore.fetchSetups().then(() => loadingJokes.value = false)
-});
 </script>
 
 <style scoped>

@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useTheme} from "vuetify";
 import LoginDialog from "@/molecules/LoginDialog.vue";
 import RegisterDialog from "@/molecules/RegisterDialog.vue";
@@ -87,13 +87,12 @@ function closeLoginDialog() {
   showLoginDialog.value = false;
 }
 
-const openRegisterDialog = () => {
+function openRegisterDialog() {
   showRegisterDialog.value = true;
 }
-const closeRegisterDialog = () => {
+function closeRegisterDialog() {
   showRegisterDialog.value = false;
 }
-
 function closeModalLoggedIn() {
   showLoginDialog.value = false;
 }
@@ -115,7 +114,8 @@ const pages = ref([
 
 const isntOppen = ref(false);
 const theme = useTheme()
-const toggleTheme = () => {
+
+function toggleTheme() {
   if (isntOppen.value) {
     theme.global.name.value = 'oppenheimer'
     isntOppen.value = false
