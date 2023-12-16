@@ -8,10 +8,8 @@
         ></v-img>
         <ul>
           <template v-for="page in pages">
-            <v-btn class="v_link">
-              <router-link class="text-white text-decoration-none" :to=page.path v-slot="{href, route, navigate}">
+            <v-btn v-if="page.name !== 'Minu naljad' || userLoggedIn" class="v_link" :to="page.path">
                 {{ page.name }}
-              </router-link>
             </v-btn>
           </template>
         </ul>
@@ -106,10 +104,10 @@ function closeRegisterDialogAndOpenLogin() {
   showLoginDialog.value = true;
 }
 const pages = ref([
-  {name: "Avaleht", path: "/"},
-  {name: "Galerii", path: "/jokes"},
-  {name: "Minu naljad", path: "/userJokes"},
-  {name: "Kasutajad", path: "/users"}
+  {name: "Avaleht", path: "/home", showLoggedIn: true},
+  {name: "Galerii", path: "/jokes", showLoggedIn: true},
+  {name: "Minu naljad", path: "/userJokes", showLoggedIn: true},
+  {name: "Kasutajad", path: "/users", showLoggedIn: true}
 ]);
 
 const isntOppen = ref(false);
@@ -137,12 +135,6 @@ function toggleTheme() {
   margin-top: 20px;
   color: white;
   text-decoration: none;
-}
-
-.user_card {
-  margin-right: 20px;
-  margin-top: 40px;
-  margin-bottom: 40px;
 }
 
 .theme_switch {

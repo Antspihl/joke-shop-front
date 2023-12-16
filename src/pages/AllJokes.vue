@@ -4,7 +4,8 @@
       <h1>Müügil olevad naljad</h1>
     </div>
     <div v-if="userJokes" class="header-title">
-      <h1>Naudi oma nalju</h1>
+      <h1 class="mb-4">Naudi oma nalju</h1>
+      <NoBoughtJokesToast v-if="jokes.length == 0"/>
     </div>
     <v-row>
       <JokeCard
@@ -28,6 +29,7 @@ import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import {Joke} from "@/molecules/types";
 import {useMainStore} from "@/api/MainStore";
+import NoBoughtJokesToast from "@/molecules/NoBoughtJokesToast.vue";
 
 const mainStore = useMainStore()
 

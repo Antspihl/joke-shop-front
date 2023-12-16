@@ -1,20 +1,18 @@
 <template>
-  <v-container class="all-jokes">
+  <v-container v-if="!loadingUsers" class="all-jokes">
     <div class="header-title">
       <h1>Kasutajad</h1>
     </div>
-    <UsersTable v-if="!loadingUsers" :users="users"/>
+    <UsersTable :users="mainStore.users"/>
   </v-container>
 </template>
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import UsersTable from "@/molecules/UsersTable.vue";
 import {useMainStore} from "@/api/MainStore";
 
 const mainStore = useMainStore()
 const loadingUsers = ref(false)
-
-const users = computed(() => mainStore.getUsers)
 
 onMounted(() => {
   loadingUsers.value = true;

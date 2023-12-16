@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!loadingTop3Jokes" >
     <div class="welcoming-container">
     <v-row>
       <v-col cols="12" class="welcoming_text">

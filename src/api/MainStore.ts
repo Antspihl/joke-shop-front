@@ -48,6 +48,7 @@ export const useMainStore = defineStore('main', {
           joke.showDialog = false;
           joke.showPunchline = true;
         });
+        this.userJokes = response.data
       } catch (error) {
         console.error("Error fetching user jokes", error)
       }
