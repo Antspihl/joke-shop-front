@@ -24,6 +24,7 @@ import Form from "vform";
 import axios from "axios";
 
 const backendUrl = "http://193.40.156.35:8080/api/jokes/add"
+// const backendUrl = "http://localhost:8080/api/jokes/add"
 
 const formFields = {
   setup: "Setup",
@@ -48,12 +49,14 @@ const snackbar = ref({
 
 const loading = ref(false)
 
-const handleSubmit = async () => {
+async function handleSubmit() {
   loading.value = true
+  const jwt = localStorage.getItem('user')!
 
   try {
     await axios.post(backendUrl, formData.value.data(), {
       headers: {
+        'Authorization': `Bearer ${jwt}`,
         "Content-Type": "application/json",
       },
     });
@@ -66,14 +69,15 @@ const handleSubmit = async () => {
     formData.value.clear()
     formData.value.reset()
   }
-};const showSnackbar = (message: string, color: string) => {
+}
+function showSnackbar(message: string, color: string) {
   snackbar.value = {
     show: true,
     message,
     color,
     timeout: 8000,
   };
-};
+}
 
 </script>
 

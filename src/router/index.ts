@@ -7,7 +7,7 @@ const routes = [
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
-        path: '',
+        path: 'home',
         name: 'Home',
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
@@ -25,6 +25,11 @@ const routes = [
         path: 'addJoke',
         name: 'AddJoke',
         component: () => import(/* webpackChunkName: "home" */ '@/views/JokeSubmissionForm.vue')
+      },
+      {
+        path: 'userJokes',
+        name: 'UserJokes',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/UserJokes.vue')
       },
     ],
   },

@@ -2,13 +2,16 @@ import {defineStore} from "pinia";
 import axios from "axios";
 import {Joke, Login, Register, User} from "@/molecules/types";
 
+
 export const API_URL: string = "http://193.40.156.35:8080/api";
+//export const API_URL: string = "http://localhost:8080/api";
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
     users: [] as User[],
     setups: [] as Joke[],
-    top3: [] as Joke[]
+    top3: [] as Joke[],
+    userJokes: [] as Joke[]
   }),
   getters: {
     getUsers(state): User[] { return state.users },
@@ -17,8 +20,13 @@ export const useMainStore = defineStore('main', {
   },
   actions: {
     async fetchSetups() {
+      const jwt = localStorage.getItem('user')!
       try {
-        const response = await axios.get(API_URL + "/jokes/setups");
+        const response = await axios.get(API_URL + "/jokes/setups", {
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          }
+        });
         response.data.forEach((joke: Joke) => {
           joke.showDialog = false;
           joke.showPunchline = false;
@@ -28,9 +36,31 @@ export const useMainStore = defineStore('main', {
         console.error("Error fetching setups", error);
       }
     },
-    async fetchTop3Setups() {
+    async fetchUserJokes() {
+      const jwt = localStorage.getItem('user')!
       try {
-        const response = await axios.get(API_URL + "/jokes/top3");
+        const response = await axios.get(API_URL + "/jokes/bought", {
+            headers: {
+              'Authorization': `Bearer ${jwt}`
+            },
+          });
+        response.data.forEach((joke: Joke) => {
+          joke.showDialog = false;
+          joke.showPunchline = true;
+        });
+        this.userJokes = response.data
+      } catch (error) {
+        console.error("Error fetching user jokes", error)
+      }
+    },
+    async fetchTop3Setups() {
+      const jwt = localStorage.getItem('user')!
+      try {
+        const response = await axios.get(API_URL + "/jokes/top3", {
+            headers: {
+              'Authorization': `Bearer ${jwt}`
+            },
+          });
         response.data.forEach((joke: Joke) => {
           joke.showDialog = false;
           joke.showPunchline = false;
@@ -41,8 +71,14 @@ export const useMainStore = defineStore('main', {
       }
     },
     async buyJokeWithId(id: number) {
+      const jwt = localStorage.getItem('user')!
       try {
-        const response = await axios.get(API_URL + "/jokes/buy/" + id);
+        const response = await axios.get(API_URL + "/jokes/buy/" + id,
+        {
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          },
+        });
         return response.data;
 
       } catch (error) {
@@ -59,31 +95,42 @@ export const useMainStore = defineStore('main', {
     },
     async registerUser(register: Register) {
       console.log(register)
-      try {
-        const response = await axios.post(
-          API_URL + "/auth/register", register, { headers: {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const response = await axios.post(
+            API_URL + "/auth/register", register, { headers: {
                 'Content-Type': 'application/json'
               }
-          }
-        );
+            }
+          );
+          resolve(response)
 
-      } catch (error) {
-        console.error("Error registering user", error);
-      }
+        } catch (error) {
+          console.error("Error registering user", error);
+          reject(error)
+        }
+      })
     },
     async login(login: Login) {
-      try {
-        const response = await axios.post(
-          API_URL + "/auth/login",
-          login, { headers: {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const response = await axios.post(
+            API_URL + "/auth/login",
+            login, {
+              headers: {
                 'Content-Type': 'application/json'
               }
-          }
-        );
+            }
+          );
+          resolve(response)
 
-      } catch (error) {
-        console.error("Error logging in", error);
-      }
+          localStorage.setItem('user', response.data)
+
+        } catch (error) {
+          console.error("Error logging in", error);
+          reject(error)
+        }
+      })
     }
 
   }

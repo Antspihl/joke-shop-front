@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!loadingTop3Jokes" >
     <div class="welcoming-container">
     <v-row>
       <v-col cols="12" class="welcoming_text">
@@ -9,7 +9,7 @@
     <v-btn class="shop_btn" color="accent" to="/jokes">Avasta nalju</v-btn>
     </div>
   </v-container>
-    <v-container class="bottom_div">
+    <v-container v-if="!loadingTop3Jokes" class="bottom_div">
     <span class="title">Müügi hitid</span>
       <v-btn color="primary" prepend-icon="mdi-plus" to="/addJoke">Lisa oma nali</v-btn>
         <JokeCard
@@ -29,15 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onBeforeMount, Ref, ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import {Joke} from "@/molecules/types";
-import {buyJokeWithId} from "@/api/requestHandler";
 import {useMainStore} from "@/api/MainStore";
 
 const mainStore = useMainStore()
-const loadingTop3Jokes = ref(false)  // todo how to use this inside template?
+const loadingTop3Jokes = ref(false)
 const jokes = computed(() => mainStore.getTop3)
 
 const currentDialogJoke = ref<Joke>({
@@ -55,22 +54,21 @@ const showDialog = computed(() => {
   return currentDialogJoke.value.showDialog;
 })
 
-const openDialog = (id: number) => {
+function openDialog(id: number) {
   setCurrentJokeById(id);
   currentDialogJoke.value.showDialog = true;
-
 }
 
-const closeDialog = () => {
+function closeDialog() {
   currentDialogJoke.value.showDialog = false;
 }
 
-const setCurrentJokeById = (id: number) => {
+function setCurrentJokeById(id: number) {
   currentDialogJoke.value = jokes.value.find(joke => joke.id === id)!;
 }
 
-const buyJoke = async (id: number) => {
-  const response = await buyJokeWithId(id);
+async function buyJoke(id: number) {
+  const response = await mainStore.buyJokeWithId(id);
   currentDialogJoke.value.punchline = response.punchline;
   currentDialogJoke.value.showPunchline = true
 }

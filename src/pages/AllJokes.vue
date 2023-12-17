@@ -1,7 +1,11 @@
 <template>
   <v-container class="all-jokes">
-    <div class="header-title">
+    <div v-if="!userJokes" class="header-title">
       <h1>Müügil olevad naljad</h1>
+    </div>
+    <div v-if="userJokes" class="header-title">
+      <h1 class="mb-4">Naudi oma nalju</h1>
+      <NoBoughtJokesToast v-if="jokes.length == 0"/>
     </div>
     <v-row>
       <JokeCard
@@ -20,56 +24,44 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import {computed, onBeforeMount, Ref, ref} from "vue";
+import {computed, ref} from "vue";
 import JokeCard from "@/molecules/JokeCard.vue";
 import JokeDialog from "@/molecules/JokeDialog.vue";
 import {Joke} from "@/molecules/types";
-import {buyJokeWithId} from "@/api/requestHandler";
 import {useMainStore} from "@/api/MainStore";
+import NoBoughtJokesToast from "@/molecules/NoBoughtJokesToast.vue";
 
 const mainStore = useMainStore()
-const loadingJokes = ref(false)
-const jokes = computed(() => mainStore.getJokes)
 
-const currentDialogJoke = ref<Joke>({
-  id: 0,
-  setup: "",
-  punchline: "",
-  price: 0,
-  rating: 3,
-  timesBought: 0,
-  showDialog: false,
-  showPunchline: false
-});
+const props = defineProps<{
+  jokes: Joke[]
+  userJokes: boolean
+}>()
+
+const currentDialogJoke = ref<Joke>(<Joke>{});
 
 const showDialog = computed(() => {
   return currentDialogJoke.value.showDialog;
 })
 
-const openDialog = (id: number) => {
+function openDialog(id: number) {
   setCurrentJokeById(id);
   currentDialogJoke.value.showDialog = true;
-
 }
 
-const closeDialog = () => {
+function closeDialog() {
   currentDialogJoke.value.showDialog = false;
 }
 
-const setCurrentJokeById = (id: number) => {
-  currentDialogJoke.value = jokes.value.find(joke => joke.id === id)!;
+function setCurrentJokeById(id: number) {
+  currentDialogJoke.value = props.jokes.find(joke => joke.id === id)!;
 }
 
-const buyJoke = async (id: number) => {
-  const response = await buyJokeWithId(id);
+async function buyJoke(id: number) {
+  const response = await mainStore.buyJokeWithId(id);
   currentDialogJoke.value.punchline = response.punchline;
   currentDialogJoke.value.showPunchline = true
 }
-
-onBeforeMount(() => {
-  loadingJokes.value = true;
-  mainStore.fetchSetups().then(() => loadingJokes.value = false)
-});
 </script>
 
 <style scoped>
