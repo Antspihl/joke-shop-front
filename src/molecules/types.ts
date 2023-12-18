@@ -49,3 +49,8 @@ export enum SORT_ORDER {
   DESC = 'DESC',
   ASC = 'ASC',
 }
+
+export type Rating = {
+  jokeId: number
+  ratingValue: number | string
+}

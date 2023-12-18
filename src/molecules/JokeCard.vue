@@ -9,24 +9,40 @@
           <span v-else>Osta</span>
         </v-btn>
         <v-rating
-          v-model="joke.rating"
+          v-model="rating.currentRating.ratingValue"
           color="primary"
           density="compact"
-          :readonly="!joke.showPunchline"/>
+          :readonly="!joke.showPunchline"
+          @update:model-value="updateRatingValue"
+        />
       </v-card-actions>
     </v-card>
   </v-col>
 </template>
 
 <script setup lang="ts">
-import {toRefs} from 'vue';
-import {Joke} from "@/molecules/types";
+import {reactive} from 'vue';
+import {Joke, Rating} from "@/molecules/types";
+import {useMainStore} from "@/api/MainStore";
+
+const mainStore = useMainStore()
 
 const props = defineProps<{
   joke: Joke;
 }>();
 
-const { joke } = toRefs(props);
+const rating = reactive({
+  currentRating: {
+    jokeId: props.joke.id,
+    ratingValue: props.joke.rating
+  } as Rating
+})
+function updateRatingValue(value: number | string) {
+  console.log(value)
+  rating.currentRating.ratingValue = value
+
+  mainStore.addRating(rating.currentRating)
+}
 </script>
 <style scoped>
 .buy-button {

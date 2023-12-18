@@ -1,5 +1,6 @@
 <template>
   <v-dialog v-model="joke.showDialog" width="auto">
+    <v-container class="joke-dialog-container">
     <v-card color="accent" class="dialog-card">
       <v-card-text>{{ joke.setup }}</v-card-text>
       <v-card-text v-if="joke.showPunchline">{{ joke.punchline }}</v-card-text>
@@ -30,8 +31,8 @@
         <v-btn color="error" @click="$emit('closeDialog')">Välju</v-btn>
       </v-card-actions>
     </v-card>
+    </v-container>
   </v-dialog>
-
 </template>
 
 <script setup lang="ts">
@@ -47,3 +48,8 @@ const props = defineProps<{
 
 const {joke} = toRefs(props);
 </script>
+<style scoped>
+.joke-dialog-container {
+  min-width: 400px;
+}
+</style>

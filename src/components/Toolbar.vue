@@ -4,7 +4,7 @@
       <v-row>
         <v-img
             class="v_image"
-            src='/Asendus_logo.png'
+            src='/Logo.png'
         ></v-img>
         <ul>
           <template v-for="page in pages">
