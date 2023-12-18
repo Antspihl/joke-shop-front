@@ -2,7 +2,7 @@
   <v-footer color="primary lighten-1" class="footer">
     <v-row align="center">
       <v-col class="logo-column">
-        <v-img class="logo" src='/Asendus_logo.png' />
+        <v-img class="logo" src='/FooterLogo.png' />
       </v-col>
 
       <v-col class="details-column">
