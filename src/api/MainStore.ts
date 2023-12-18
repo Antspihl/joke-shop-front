@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import axios from "axios";
-import {Joke, Login, Register, User, UsersPageRequest} from "@/molecules/types";
+import {Joke, Login, Rating, Register, User, UsersPageRequest} from "@/molecules/types";
 
 
 export const API_URL: string = "http://193.40.156.35:8080/api";
@@ -47,11 +47,12 @@ export const useMainStore = defineStore('main', {
               'Authorization': `Bearer ${jwt}`
             },
           });
-        response.data.forEach((joke: Joke) => {
+        const sortedJokes = response.data.sort((a:Joke, b:Joke) => a.id - b.id);
+        sortedJokes.forEach((joke: Joke) => {
           joke.showDialog = false;
           joke.showPunchline = true;
         });
-        this.userJokes = response.data
+        this.userJokes = sortedJokes
       } catch (error) {
         console.error("Error fetching user jokes", error)
       }
@@ -169,6 +170,25 @@ export const useMainStore = defineStore('main', {
         })
       } catch (error) {
         console.error("Error deleting user", error)
+      }
+    },
+    async addRating(rating: Rating) {
+      const jwt = localStorage.getItem('user')!
+      if (jwt == null) {
+        return
+      } else {
+      try {
+        await axios.post(API_URL + "/ratings", rating, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwt}`
+          },
+        }).then(() => {
+          this.fetchUserJokes()
+        })
+      } catch(error) {
+        console.error("Error adding rating", error)
+      }
       }
     },
     async randomJoke() {

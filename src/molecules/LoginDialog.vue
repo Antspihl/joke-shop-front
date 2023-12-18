@@ -67,7 +67,6 @@ async function loginUser() {
     try {
       await mainStore.login(login.value)
       emit('closeDialogLoggedIn')
-      window.location.reload();
     } catch (error) {
       console.error("Login failed", error);
     }

@@ -4,11 +4,11 @@
       <v-row>
         <v-img
             class="v_image"
-            src='/Asendus_logo.png'
+            src='/Logo.png'
         ></v-img>
         <ul>
           <template v-for="page in pages">
-            <v-btn v-if="showToolBarButton(page)" class="v_link" :to="page.path">
+            <v-btn :active="false" v-if="showToolBarButton(page)" class="v_link" :to="page.path">
                 {{ page.name }}
             </v-btn>
           </template>
@@ -109,20 +109,19 @@ function closeRegisterDialog() {
 }
 function closeModalLoggedIn() {
   showLoginDialog.value = false;
+  window.location.reload()
 }
 
 function logOut() {
   localStorage.removeItem('user')
-  router.push('/home').then(() => {
-    window.location.reload()
-  })
+  window.location.reload()
 }
 function closeRegisterDialogAndOpenLogin() {
   showRegisterDialog.value = false;
   showLoginDialog.value = true;
 }
 const pages = ref([
-  {name: "Avaleht", path: "/home"},
+  {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
   {name: "Minu naljad", path: "/userJokes"},
   {name: "Kasutajad", path: "/users"}
