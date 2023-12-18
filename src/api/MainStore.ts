@@ -1,14 +1,16 @@
 import {defineStore} from "pinia";
 import axios from "axios";
-import {Joke, Login, Register, User} from "@/molecules/types";
+import {Joke, Login, Register, User, UsersPageRequest} from "@/molecules/types";
 
 
-export const API_URL: string = "http://193.40.156.35:8080/api";
-//export const API_URL: string = "http://localhost:8080/api";
+//export const API_URL: string = "http://193.40.156.35:8080/api";
+export const API_URL: string = "http://localhost:8080/api";
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
+    user: {} as User,
     users: [] as User[],
+    totalUsersCount: 0,
     setups: [] as Joke[],
     top3: [] as Joke[],
     userJokes: [] as Joke[]
@@ -24,7 +26,7 @@ export const useMainStore = defineStore('main', {
       try {
         const response = await axios.get(API_URL + "/jokes/setups", {
           headers: {
-            'Authorization': `Bearer ${jwt}`
+            'Authorization': `Bearer ${jwt ?? ""}`
           }
         });
         response.data.forEach((joke: Joke) => {
@@ -58,7 +60,7 @@ export const useMainStore = defineStore('main', {
       try {
         const response = await axios.get(API_URL + "/jokes/top3", {
             headers: {
-              'Authorization': `Bearer ${jwt}`
+              'Authorization': `Bearer ${jwt ?? ""}`
             },
           });
         response.data.forEach((joke: Joke) => {
@@ -93,8 +95,22 @@ export const useMainStore = defineStore('main', {
         console.error("Error fetching users", error);
       }
     },
+    async fetchUsersPage(request: UsersPageRequest) {
+      try {
+        const response = await axios.get(API_URL + "/users/usersTable", {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          params: {...request}
+        })
+        this.users = response.data.pageUsers;
+        this.totalUsersCount = response.data.totalUsersCount
+
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    },
     async registerUser(register: Register) {
-      console.log(register)
       return new Promise(async (resolve, reject) => {
         try {
           const response = await axios.post(
@@ -131,7 +147,29 @@ export const useMainStore = defineStore('main', {
           reject(error)
         }
       })
-    }
+    },
+    async fetchUser() {
+      const jwt = localStorage.getItem('user')!
+      if (jwt == null) {
+        return
+      } else {
+        const response = await axios.get(API_URL + "/users/get", {
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          },
+        })
+        this.user = response.data
+      }
+    },
 
+    async deleteUser(userId: number, pageRequest: UsersPageRequest) {
+      try {
+        await axios.delete(API_URL + "users/" + userId).then(() => {
+          this.fetchUsersPage(pageRequest)
+        })
+      } catch (error) {
+        console.error("Error deleting user", error)
+      }
+    }
   }
 })

@@ -4,33 +4,51 @@
   >
   <v-text-field
     v-model="search"
-    label="Otsi"
+    label="Otsi E-posti järgi"
     :clearable="true"
    />
   </v-responsive>
-  <VDataTable
+  <VDataTableServer
     :headers="headers"
-    :items="users"
-    :search="search"
+    :items="mainStore.users"
+    :items-per-page="currentPagination.limit"
+    :items-length="mainStore.totalUsersCount"
+    @update:page="value => { currentPagination.page = value - 1; fetchUser(); }"
+    @update:items-per-page="value => { currentPagination.limit = value; fetchUser(); }"
+    @update:sort-by="updateSort"
     class="custom-users-table"
   >
     <template v-slot:item.delete="{item}">
       <VIcon @click="deleteItem(item)">mdi-delete</VIcon>
     </template>
-  </VDataTable>
+  </VDataTableServer>
 </template>
 
 <script setup lang="ts">
 
 import {User} from "@/molecules/types";
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useMainStore} from "@/api/MainStore";
 
 const search = ref('')
 
-const props = defineProps<{
-  users: User[];
-}>();
+const mainStore = useMainStore()
 
+const currentPagination = ref({
+  email: '',
+  page: 0,
+  limit: 10,
+  sort: 'userId',
+  dir: 'ASC'
+});
+
+watch(search, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    currentPagination.value.page = 0;
+    currentPagination.value.email = newValue;
+    fetchUser();
+  }
+});
 const headers = ref([
   {
     key: 'userId',
@@ -43,10 +61,19 @@ const headers = ref([
   { key: 'delete', title: '', sortable: false,}
 ]);
 
-function deleteItem(item: any) {
-  console.log(item)
-  ///TODO: adminid võiksid saada usereid kustutada
+function deleteItem(item: User) {
+  mainStore.deleteUser(item.userId, currentPagination.value)
+}
 
+function fetchUser() {
+  mainStore.fetchUsersPage(currentPagination.value)
+}
+function updateSort(sortObject: any) {
+  if (sortObject[0]) {
+    currentPagination.value.sort = sortObject[0].key;
+    currentPagination.value.dir = sortObject[0].order === 'desc' ? 'DESC' : 'ASC';
+    fetchUser();
+  }
 }
 </script>
 

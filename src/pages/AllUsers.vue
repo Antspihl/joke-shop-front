@@ -3,7 +3,7 @@
     <div class="header-title">
       <h1>Kasutajad</h1>
     </div>
-    <UsersTable :users="mainStore.users"/>
+    <UsersTable/>
   </v-container>
 </template>
 <script setup lang="ts">
@@ -16,7 +16,13 @@ const loadingUsers = ref(false)
 
 onMounted(() => {
   loadingUsers.value = true;
-  mainStore.fetchUsers().then(() => loadingUsers.value = false)
+  const pageRequest = {
+    limit: 10,
+    page: 0,
+    sort: 'userId',
+    dir: 'ASC'
+  }
+  mainStore.fetchUsersPage(pageRequest).then(() => loadingUsers.value = false)
 });
 </script>
 

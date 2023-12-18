@@ -8,7 +8,7 @@
         ></v-img>
         <ul>
           <template v-for="page in pages">
-            <v-btn v-if="page.name !== 'Minu naljad' || userLoggedIn" class="v_link" :to="page.path">
+            <v-btn v-if="showToolBarButton(page)" class="v_link" :to="page.path">
                 {{ page.name }}
             </v-btn>
           </template>
@@ -69,15 +69,30 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {useTheme} from "vuetify";
 import LoginDialog from "@/molecules/LoginDialog.vue";
 import RegisterDialog from "@/molecules/RegisterDialog.vue";
+import {useMainStore} from "@/api/MainStore";
+import {Page} from "@/molecules/types";
+import {useRouter} from "vue-router";
+
+const mainStore = useMainStore()
+const router = useRouter()
 
 const showLoginDialog = ref(false);
 const showRegisterDialog = ref(false);
 const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
+
+function showToolBarButton(page: Page) {
+  if (page.name == "Minu naljad" && !userLoggedIn.value) {
+    return false
+  }
+  return !(page.name == "Kasutajad" && !mainStore.user.isAdmin);
+
+
+}
 function openLoginDialog() {
   showLoginDialog.value = true;
 }
@@ -97,17 +112,19 @@ function closeModalLoggedIn() {
 
 function logOut() {
   localStorage.removeItem('user')
-  window.location.reload()
+  router.push('/home').then(() => {
+    window.location.reload()
+  })
 }
 function closeRegisterDialogAndOpenLogin() {
   showRegisterDialog.value = false;
   showLoginDialog.value = true;
 }
 const pages = ref([
-  {name: "Avaleht", path: "/home", showLoggedIn: true},
-  {name: "Galerii", path: "/jokes", showLoggedIn: true},
-  {name: "Minu naljad", path: "/userJokes", showLoggedIn: true},
-  {name: "Kasutajad", path: "/users", showLoggedIn: true}
+  {name: "Avaleht", path: "/home"},
+  {name: "Galerii", path: "/jokes"},
+  {name: "Minu naljad", path: "/userJokes"},
+  {name: "Kasutajad", path: "/users"}
 ]);
 
 const isntOppen = ref(false);
@@ -122,6 +139,10 @@ function toggleTheme() {
     isntOppen.value = true
   }
 }
+
+onBeforeMount(() => {
+  mainStore.fetchUser()
+})
 </script>
 
 <style scoped>
