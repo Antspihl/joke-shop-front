@@ -109,14 +109,14 @@ function closeRegisterDialog() {
 }
 function closeModalLoggedIn() {
   showLoginDialog.value = false;
-  router.push('/').then(() => {
+  router.push({name: 'Home'}).then(() => {
     window.location.reload()
   })
 }
 
 function logOut() {
   localStorage.removeItem('user')
-  router.push('/').then(() => {
+  router.push({name: 'Home'}).then(() => {
     window.location.reload()
   })
 }
