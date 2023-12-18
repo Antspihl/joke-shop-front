@@ -109,6 +109,9 @@ function closeRegisterDialog() {
 }
 function closeModalLoggedIn() {
   showLoginDialog.value = false;
+  router.push('/').then(() => {
+    window.location.reload()
+  })
 }
 
 function logOut() {
