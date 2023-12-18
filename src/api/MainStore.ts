@@ -3,8 +3,8 @@ import axios from "axios";
 import {Joke, Login, Register, User, UsersPageRequest} from "@/molecules/types";
 
 
-//export const API_URL: string = "http://193.40.156.35:8080/api";
-export const API_URL: string = "http://localhost:8080/api";
+export const API_URL: string = "http://193.40.156.35:8080/api";
+//export const API_URL: string = "http://localhost:8080/api";
 export const API_HEADERS: {} = {'content-type': 'application/json'};
 export const useMainStore = defineStore('main', {
   state: () => ({
