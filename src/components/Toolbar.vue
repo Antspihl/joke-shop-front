@@ -8,7 +8,7 @@
         ></v-img>
         <ul>
           <template v-for="page in pages">
-            <v-btn v-if="showToolBarButton(page)" class="v_link" :to="page.path">
+            <v-btn :active="false" v-if="showToolBarButton(page)" class="v_link" :to="page.path">
                 {{ page.name }}
             </v-btn>
           </template>
@@ -125,7 +125,7 @@ function closeRegisterDialogAndOpenLogin() {
   showLoginDialog.value = true;
 }
 const pages = ref([
-  {name: "Avaleht", path: "/home"},
+  {name: "Avaleht", path: "/"},
   {name: "Galerii", path: "/jokes"},
   {name: "Minu naljad", path: "/userJokes"},
   {name: "Kasutajad", path: "/users"}
