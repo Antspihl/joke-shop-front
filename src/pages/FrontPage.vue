@@ -2,8 +2,8 @@
   <v-container v-if="!loadingTop3Jokes" >
     <div class="welcoming-container">
     <v-row>
-      <v-col cols="12" class="welcoming_text">
-        <span>Midagi naljadest siia. Võiks RNG sõnum olla</span>
+      <v-col v-if="!loadingRandomJoke" cols="12" class="welcoming_text">
+        <span>{{mainStore.randomJoke}}</span>
       </v-col>
     </v-row>
     <v-btn class="shop_btn" color="accent" to="/jokes">Avasta nalju</v-btn>
@@ -39,6 +39,7 @@ const mainStore = useMainStore()
 const loadingTop3Jokes = ref(false)
 const jokes = computed(() => mainStore.getTop3)
 const userLoggedIn = ref(localStorage.getItem('user') ?? false)
+const loadingRandomJoke = ref(false)
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -78,6 +79,8 @@ async function buyJoke(id: number) {
 }
 
 onBeforeMount(() => {
+  loadingRandomJoke.value = true;
+  mainStore.randomJoke().then(() => loadingRandomJoke.value = false);
   loadingTop3Jokes.value = true;
   mainStore.fetchTop3Setups().then(() => loadingTop3Jokes.value = false);
 });
