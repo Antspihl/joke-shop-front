@@ -6,22 +6,43 @@
     <form class="my-form" @submit.prevent="handleSubmit">
       <div v-for="(label, key) in formFields" :key="key" class="form-group">
         <label :for="key">{{ label }}</label>
-        <input v-if="key !== 'isOriginal'" v-model="formData[key]" :id="key" class="form-control" :required="true" />
+        <input v-if="key !== 'isOriginal'" v-model="formData[key]" :id="key" class="form-control" :required="true"/>
         <input v-else type="checkbox" v-model="formData[key]" id="isOriginal" style="margin-left: 10px"/>
       </div>
-      <v-btn :disabled="loading" type="submit" class="btn-primary">Lisa</v-btn>
+      <v-tooltip
+        :open-on-hover="true"
+        location="bottom"
+        text="Nalja lisamiseks, pead olema sisse logitud."
+        :disabled="userLoggedIn !== false"
+      >
+        <template v-slot:activator="{ props: tooltip }">
+          <v-btn
+            :disabled="loading"
+            type="submit"
+            class="btn-primary"
+            v-bind="mergeProps(tooltip)"
+          >Lisa
+          </v-btn>
+        </template>
+      </v-tooltip>
     </form>
   </v-container>
-  <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout" close-on-content-click>
+  <v-snackbar
+              v-model="snackbar.show"
+              :color="snackbar.color"
+              :timeout="snackbar.timeout"
+              :close-on-content-click="true">
     {{ snackbar.message }}
   </v-snackbar>
 </template>
 
 <script setup lang="ts">
 
-import { ref } from "vue";
+import {mergeProps, ref} from "vue";
 import Form from "vform";
 import axios from "axios";
+
+const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
 const backendUrl = "http://193.40.156.35:8080/api/jokes/add"
 // const backendUrl = "http://localhost:8080/api/jokes/add"
@@ -52,7 +73,10 @@ const loading = ref(false)
 async function handleSubmit() {
   loading.value = true
   const jwt = localStorage.getItem('user')!
-
+  if (jwt == null) {
+    loading.value = false
+    return
+  }
   try {
     await axios.post(backendUrl, formData.value.data(), {
       headers: {
@@ -60,16 +84,17 @@ async function handleSubmit() {
         "Content-Type": "application/json",
       },
     });
-    showSnackbar("Joke added successfully", "#FFFCF5");
+    showSnackbar("Nali on lisatud", "#FFFCF5");
   } catch (error) {
     console.error("Error submitting form:", error);
-    showSnackbar("Error adding joke", "#D7D3AE");
+    showSnackbar("Error nalja lisamisel", "#D7D3AE");
   } finally {
     loading.value = false
     formData.value.clear()
     formData.value.reset()
   }
 }
+
 function showSnackbar(message: string, color: string) {
   snackbar.value = {
     show: true,
@@ -86,15 +111,18 @@ function showSnackbar(message: string, color: string) {
   text-underline-offset: 15px;
   text-decoration: underline;
 }
+
 .title-container {
   color: white;
   font-size: 35px;
   margin-left: 100px;
 }
+
 .form-container {
   display: flex;
   justify-content: center;
 }
+
 .my-form {
   max-width: 400px;
   margin: 0 auto;
