@@ -38,7 +38,6 @@ const rating = reactive({
   } as Rating
 })
 function updateRatingValue(value: number | string) {
-  console.log(value)
   rating.currentRating.ratingValue = value
 
   mainStore.addRating(rating.currentRating)
