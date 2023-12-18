@@ -38,7 +38,7 @@ import {useMainStore} from "@/api/MainStore";
 const mainStore = useMainStore()
 const loadingTop3Jokes = ref(false)
 const jokes = computed(() => mainStore.getTop3)
-const userLoggedIn = localStorage.getItem('user') ?? false
+const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
 const currentDialogJoke = ref<Joke>({
   id: 0,
@@ -69,7 +69,7 @@ function setCurrentJokeById(id: number) {
 }
 
 async function buyJoke(id: number) {
-  if (userLoggedIn === false) {
+  if (userLoggedIn.value === false) {
     return
   }
   const response = await mainStore.buyJokeWithId(id);
