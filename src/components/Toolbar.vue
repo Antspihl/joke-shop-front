@@ -113,7 +113,7 @@ function closeModalLoggedIn() {
 
 function logOut() {
   localStorage.removeItem('user')
-  router.push('/home').then(() => {
+  router.push('/').then(() => {
     window.location.reload()
   })
 }
