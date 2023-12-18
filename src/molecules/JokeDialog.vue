@@ -10,20 +10,40 @@
         Hind: {{ joke.price }}€
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="$emit('buyJoke', joke.id)" v-if="!joke.showPunchline">Osta</v-btn>
+        <v-tooltip
+          :open-on-hover="true"
+          location="bottom"
+          text="Nalja ostmiseks, pead olema sisse logitud."
+          :disabled="userLoggedIn !== false"
+        >
+          <template v-slot:activator="{ props: tooltip }">
+            <v-btn
+              color="primary"
+              @click="$emit('buyJoke', joke.id)"
+              v-if="!joke.showPunchline"
+              v-bind="mergeProps(tooltip)"
+            >
+              Osta
+            </v-btn>
+          </template>
+        </v-tooltip>
         <v-btn color="error" @click="$emit('closeDialog')">Välju</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
+
 </template>
 
 <script setup lang="ts">
-import {toRefs} from 'vue';
+import {ref, toRefs} from 'vue';
 import {Joke} from "@/molecules/types";
+import {mergeProps} from "vue";
+
+const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
 const props = defineProps<{
   joke: Joke;
 }>();
 
-const { joke } = toRefs(props);
+const {joke} = toRefs(props);
 </script>
