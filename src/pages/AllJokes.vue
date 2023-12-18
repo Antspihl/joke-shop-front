@@ -32,6 +32,7 @@ import {useMainStore} from "@/api/MainStore";
 import NoBoughtJokesToast from "@/molecules/NoBoughtJokesToast.vue";
 
 const mainStore = useMainStore()
+const userLoggedIn = ref(localStorage.getItem('user') ?? false)
 
 const props = defineProps<{
   jokes: Joke[]
@@ -58,6 +59,9 @@ function setCurrentJokeById(id: number) {
 }
 
 async function buyJoke(id: number) {
+  if (userLoggedIn.value === false) {
+    return
+  }
   const response = await mainStore.buyJokeWithId(id);
   currentDialogJoke.value.punchline = response.punchline;
   currentDialogJoke.value.showPunchline = true
