@@ -164,7 +164,7 @@ export const useMainStore = defineStore('main', {
 
     async deleteUser(userId: number, pageRequest: UsersPageRequest) {
       try {
-        await axios.delete(API_URL + "users/" + userId).then(() => {
+        await axios.delete(API_URL + "/users/" + userId).then(() => {
           this.fetchUsersPage(pageRequest)
         })
       } catch (error) {

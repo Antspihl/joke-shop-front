@@ -19,9 +19,17 @@
     class="custom-users-table"
   >
     <template v-slot:item.delete="{item}">
-      <VIcon @click="deleteItem(item)">mdi-delete</VIcon>
+      <VIcon @click="openDeleteConfirmation(item)">mdi-delete</VIcon>
     </template>
   </VDataTableServer>
+  <UserDeletingConfirmation
+      v-model="deleteConfirmation"
+      v-if="deleteConfirmation"
+      :page-request="currentPagination"
+      :user-to-delete="userToDelete"
+      @close-dialog="hideDeleteConfirmation"
+      @user-deleted="hideDeleteConfirmation"
+  />
 </template>
 
 <script setup lang="ts">
@@ -29,6 +37,7 @@
 import {User} from "@/molecules/types";
 import {ref, watch} from "vue";
 import {useMainStore} from "@/api/MainStore";
+import UserDeletingConfirmation from "@/molecules/UserDeletingConfirmation.vue";
 
 const search = ref('')
 
@@ -41,6 +50,8 @@ const currentPagination = ref({
   sort: 'userId',
   dir: 'ASC'
 });
+const userToDelete = ref<User>(<User>{})
+const deleteConfirmation = ref(false)
 
 watch(search, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -61,10 +72,6 @@ const headers = ref([
   { key: 'delete', title: '', sortable: false,}
 ]);
 
-function deleteItem(item: User) {
-  mainStore.deleteUser(item.userId, currentPagination.value)
-}
-
 function fetchUser() {
   mainStore.fetchUsersPage(currentPagination.value)
 }
@@ -74,6 +81,15 @@ function updateSort(sortObject: any) {
     currentPagination.value.dir = sortObject[0].order === 'desc' ? 'DESC' : 'ASC';
     fetchUser();
   }
+}
+
+function openDeleteConfirmation(user: User) {
+  userToDelete.value = user
+  deleteConfirmation.value = true
+}
+function hideDeleteConfirmation() {
+  deleteConfirmation.value = false
+  userToDelete.value = <User>{}
 }
 </script>
 

@@ -28,6 +28,7 @@
 
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ props }">
+        <span v-if="userLoggedIn">{{mainStore.user.username}}</span>
         <v-icon class="mr-6 ml-3" v-bind="props">mdi-account-circle</v-icon>
       </template>
       <v-col class="v-dropdown">
