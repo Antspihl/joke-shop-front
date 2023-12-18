@@ -13,7 +13,8 @@ export const useMainStore = defineStore('main', {
     totalUsersCount: 0,
     setups: [] as Joke[],
     top3: [] as Joke[],
-    userJokes: [] as Joke[]
+    userJokes: [] as Joke[],
+    randomJokeValue: String
   }),
   getters: {
     getUsers(state): User[] { return state.users },
@@ -162,7 +163,6 @@ export const useMainStore = defineStore('main', {
         this.user = response.data
       }
     },
-
     async deleteUser(userId: number, pageRequest: UsersPageRequest) {
       try {
         await axios.delete(API_URL + "/users/" + userId).then(() => {
@@ -189,6 +189,15 @@ export const useMainStore = defineStore('main', {
       } catch(error) {
         console.error("Error adding rating", error)
       }
+      }
+    },
+    async randomJoke() {
+      try {
+        const response = await axios.get(API_URL + "/jokes/random")
+        console.log(response.data)
+        this.randomJoke = response.data
+      } catch (error) {
+        console.error("Error fetching random joke", error)
       }
     }
   }
